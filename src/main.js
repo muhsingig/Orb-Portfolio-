@@ -1,7 +1,8 @@
 import './style.css';
+import gsap from 'gsap';
 import { buildSections } from './sections.js';
 import { initScroll } from './scroll.js';
-import { initPreloader } from './preloader.js';
+import { initPreloader, INTRO } from './preloader.js';
 import { initProjectDetail } from './projectDetail.js';
 
 // Keep scroll position at top on load (matches preloader gate)
@@ -17,8 +18,45 @@ let orbStateRef = null;
 let onEnterHint = () => {};
 initPreloader(() => {
   entered = true;
-  if (orbStateRef) orbStateRef.target.opacity = 1;
-  setTimeout(() => onEnterHint(true), 1600);
+  if (orbStateRef) {
+    const T = orbStateRef.target;
+    T.opacity = 1;
+    const chargeS = INTRO.charge / 1000;
+    // charge: pink ramps to icy blue-white, halo flares, fog churns
+    gsap.to(T, {
+      cool: 1,
+      halo: 1.2,
+      coreGlow: 0.95,
+      filamentSpeed: 0.85,
+      fogAlpha: 0.65,
+      fogSpeed: 1.5,
+      duration: chargeS,
+      ease: 'power2.in',
+    });
+    // burst: snap back toward the resting pink state
+    gsap.to(T, {
+      cool: 0,
+      halo: 0.55,
+      coreGlow: 0.55,
+      filamentSpeed: 0.35,
+      fogAlpha: 0.45,
+      fogSpeed: 0.3,
+      duration: 1.9,
+      ease: 'power2.out',
+      delay: chargeS,
+    });
+    // shockwave stand-in: quick scale pulse at the burst moment
+    gsap.to(T, {
+      scale: 1.05,
+      duration: 0.16,
+      ease: 'power2.out',
+      delay: chargeS,
+      yoyo: true,
+      repeat: 1,
+    });
+  }
+  // scroll hint after the title has settled
+  setTimeout(() => onEnterHint(true), INTRO.charge + INTRO.burst + INTRO.settle + 300);
 });
 
 initProjectDetail();

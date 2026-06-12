@@ -21,6 +21,7 @@ export const orbState = {
     dim: 0,          // global dimming 0..1 (manifest "ghost" state)
     dive: 0,         // 0 = normal bg, 1 = inside-the-orb deep blue bg
     theme: 0,        // 0 = pink/blue, 1 = warm gold/orange
+    cool: 0,         // 0 = normal, 1 = icy blue surge (intro charge/burst)
     fogAlpha: 0.45,  // background fog amount
     fogSpeed: 0.3,
     opacity: 0,      // master orb opacity (fades in after preloader)
@@ -29,6 +30,8 @@ export const orbState = {
   ease: 0.075,
 };
 orbState.current = { ...orbState.target };
+// Dev hook for inspecting/driving the orb from the console
+if (import.meta.env.DEV) window.__orbState = orbState;
 
 // Palette
 const COL = {
@@ -40,6 +43,9 @@ const COL = {
   warmCore: new THREE.Color('#ffb36b'),
   warmFil: new THREE.Color('#ffd9a8'),
   diveBg: new THREE.Color('#16166e'),
+  coolShell: new THREE.Color('#9fbcff'),
+  coolHot: new THREE.Color('#f0f6ff'),
+  coolFil: new THREE.Color('#8d96ff'),
 };
 
 const NOISE_GLSL = /* glsl */ `
@@ -707,6 +713,7 @@ function onResize() {
 const tmpColor = new THREE.Color();
 const tmpColor2 = new THREE.Color();
 const tmpColor3 = new THREE.Color();
+const tmpColor4 = new THREE.Color();
 
 function render() {
   const dt = clock.getDelta();
@@ -729,10 +736,19 @@ function render() {
   const dim = c.dim;
   const fade = c.opacity;
   const theme = c.theme;
+  const cool = c.cool;
 
   // Theme colors
   const corePink = tmpColor.copy(COL.plasmaPink).lerp(COL.warmGold, theme);
   const coreHot = tmpColor2.copy(COL.plasmaPinkHot).lerp(COL.warmCore, theme);
+  // Intro surge: halo/shell/fog shift fully to icy blue-white while
+  // the core keeps most of its pink (matches the original's burst).
+  const shellCol = tmpColor4.copy(corePink);
+  if (cool > 0.001) {
+    shellCol.lerp(COL.coolShell, cool);
+    corePink.lerp(COL.coolShell, cool * 0.35);
+    coreHot.lerp(COL.coolHot, cool * 0.6);
+  }
 
   coreU.uTime.value = t;
   coreU.uColor.value.copy(corePink);
@@ -741,6 +757,7 @@ function render() {
   coreU.uOpacity.value = fade;
 
   const filBlue = tmpColor3.copy(COL.filamentBlue).lerp(COL.warmFil, theme);
+  if (cool > 0.001) filBlue.lerp(COL.coolFil, cool * 0.7);
   glowU.uTime.value = t;
   glowU.uSpeed.value = c.filamentSpeed;
   glowU.uLength.value = c.filamentLength;
@@ -764,15 +781,15 @@ function render() {
   tipsU.uSizeMult.value = sc * (window.devicePixelRatio > 1.5 ? 1.5 : 1);
 
   shellU.uTime.value = t;
-  shellU.uTint.value.copy(corePink);
+  shellU.uTint.value.copy(shellCol);
   shellU.uOpacity.value = c.glass * 1.6 * fade * (1 - c.dive);
   shellU.uDim.value = dim;
 
-  halo.material.color.copy(corePink);
+  halo.material.color.copy(shellCol);
   halo.material.opacity = c.halo * (1 - dim * 0.85) * fade * (1 - c.dive);
 
   bgU.uTime.value = t;
-  bgU.uFogColor.value.copy(corePink);
+  bgU.uFogColor.value.copy(shellCol);
   bgU.uFogAlpha.value = c.fogAlpha * (1 - dim * 0.6) * fade;
   bgU.uFogSpeed.value = c.fogSpeed;
   bgU.uDive.value = c.dive;

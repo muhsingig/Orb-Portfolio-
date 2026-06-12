@@ -294,14 +294,19 @@ main { position: relative; z-index: 1; }
   margin: 0.5rem 0 0;
   font-family: 'Switzer', sans-serif;
   font-size: clamp(0.8rem, 3vw, 1.1rem);
-  transition: opacity 0.6s 0.1s;
+  transition: opacity 0.8s 1.2s;
 }
 
-.heroOverlay__elec { transition: opacity 0.9s; }
+/* Electric strokes flash over the title only during the burst phase */
+.heroOverlay__elec { opacity: 0; transition: opacity 0.2s ease; }
+.elec-active .heroOverlay__elec { opacity: 1; }
+
 .hero-pending .heroOverlay__title,
+.hero-pending .heroOverlay__baseline { opacity: 0; }
+/* Solid white fill completes last (settled phase) — until then the
+   title reads as the dim 70%-white outline only */
 .hero-pending .heroOverlay__title--fill,
-.hero-pending .heroOverlay__baseline,
-.hero-pending .heroOverlay__elec { opacity: 0; }
+.fill-pending .heroOverlay__title--fill { opacity: 0; }
 
 /* ------------------------------------------------------------
    Scroll hint

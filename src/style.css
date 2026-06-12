@@ -81,9 +81,36 @@ main { position: relative; z-index: 1; }
   z-index: 100;
   /* transparent: the orb glows behind the ENTER screen */
   background: transparent;
-  transition: opacity 1.1s ease;
+  /* the CTA snaps out fast on click (matches original) */
+  transition: opacity 0.3s ease;
 }
 .preloader--hidden { opacity: 0; pointer-events: none; }
+
+/* Shockwave ring: expands across the viewport at the burst moment */
+.shockwave {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  z-index: 60;
+  pointer-events: none;
+  width: 8vmax;
+  height: 8vmax;
+  border-radius: 50%;
+  border: 3px solid rgba(195, 218, 255, 0.85);
+  box-shadow:
+    0 0 28px rgba(150, 185, 255, 0.55),
+    inset 0 0 20px rgba(150, 185, 255, 0.4);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  filter: blur(1px);
+}
+.shockwave--go {
+  animation: shockwave-grow 1.25s cubic-bezier(0.16, 0.7, 0.4, 1) forwards;
+}
+@keyframes shockwave-grow {
+  from { opacity: 0.85; width: 8vmax; height: 8vmax; }
+  to { opacity: 0; width: 320vmax; height: 320vmax; }
+}
 
 .preloader__ctaWrap {
   position: absolute;

@@ -746,8 +746,8 @@ function render() {
   const shellCol = tmpColor4.copy(corePink);
   if (cool > 0.001) {
     shellCol.lerp(COL.coolShell, cool);
-    corePink.lerp(COL.coolShell, cool * 0.35);
-    coreHot.lerp(COL.coolHot, cool * 0.6);
+    corePink.lerp(COL.coolShell, cool * 0.22);
+    coreHot.lerp(COL.coolHot, cool * 0.38);
   }
 
   coreU.uTime.value = t;

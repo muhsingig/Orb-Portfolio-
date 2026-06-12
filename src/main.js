@@ -21,19 +21,25 @@ initPreloader(() => {
   if (orbStateRef) {
     const T = orbStateRef.target;
     T.opacity = 1;
-    const chargeS = INTRO.charge / 1000;
-    // charge: pink ramps to icy blue-white, halo flares, fog churns
+    const burstAt = INTRO.charge / 1000;
+    // charge: fast snap to icy blue (~0.5s), then HOLD charged
     gsap.to(T, {
       cool: 1,
       halo: 1.2,
-      coreGlow: 0.95,
-      filamentSpeed: 0.85,
       fogAlpha: 0.65,
       fogSpeed: 1.5,
-      duration: chargeS,
-      ease: 'power2.in',
+      duration: 0.55,
+      ease: 'power2.out',
     });
-    // burst: snap back toward the resting pink state
+    // while held, the filaments grow more and more energetic
+    gsap.to(T, {
+      filamentSpeed: 1.15,
+      coreGlow: 1.0,
+      duration: 1.5,
+      ease: 'power1.in',
+      delay: 0.4,
+    });
+    // burst: quick snap back to the resting pink state
     gsap.to(T, {
       cool: 0,
       halo: 0.55,
@@ -41,16 +47,16 @@ initPreloader(() => {
       filamentSpeed: 0.35,
       fogAlpha: 0.45,
       fogSpeed: 0.3,
-      duration: 1.9,
-      ease: 'power2.out',
-      delay: chargeS,
+      duration: 0.55,
+      ease: 'power2.inOut',
+      delay: burstAt,
     });
-    // shockwave stand-in: quick scale pulse at the burst moment
+    // scale kick at the burst moment
     gsap.to(T, {
       scale: 1.05,
-      duration: 0.16,
+      duration: 0.14,
       ease: 'power2.out',
-      delay: chargeS,
+      delay: burstAt,
       yoyo: true,
       repeat: 1,
     });

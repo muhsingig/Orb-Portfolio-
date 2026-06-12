@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Creative Front-End Developer crafting immersive custom websites with Three.js, WebGL and GSAP." />
+    <meta name="theme-color" content="#070707" />
+    <title>Creative Developer Portfolio</title>
+    <link rel="preconnect" href="https://api.fontshare.com" />
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=switzer@300,400,500,600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="app">
+      <!-- Fixed WebGL canvas -->
+      <canvas id="orb-canvas" aria-hidden="true"></canvas>
+
+      <!-- Preloader -->
+      <div class="preloader" id="preloader">
+        <div class="preloader__ctaWrap">
+          <button class="preloader__cta glitch-btn" id="enter-btn" type="button">
+            <span class="cta-glitch" data-text="ENTER">ENTER</span>
+          </button>
+        </div>
+      </div>
+
+      <main id="main">
+        <!-- HERO -->
+        <section class="heroSection" id="hero">
+          <div class="heroOverlay">
+            <div class="heroOverlay__titleBlock">
+              <div class="heroOverlay__titleStack" id="hero-title-stack">
+                <svg class="heroOverlay__elec" id="hero-elec" aria-hidden="true">
+                  <defs>
+                    <filter id="elec-blur" x="-20%" y="-20%" width="140%" height="140%">
+                      <feGaussianBlur stdDeviation="4" />
+                    </filter>
+                  </defs>
+                  <text class="elec-base" x="0" y="0"></text>
+                  <text class="elec-glow" x="0" y="0"></text>
+                  <text class="elec-spark-1" x="0" y="0"></text>
+                  <text class="elec-spark-2" x="0" y="0"></text>
+                </svg>
+                <h1 class="heroOverlay__title heroOverlay__title--outline" id="hero-title-outline"></h1>
+                <span class="heroOverlay__title heroOverlay__title--fill" id="hero-title-fill" aria-hidden="true"></span>
+              </div>
+              <p class="heroOverlay__baseline" id="hero-baseline"></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- MANIFEST -->
+        <section class="manifest" id="manifest">
+          <div class="manifest__sticky">
+            <span class="sectionLabel">Manifest</span>
+            <div class="manifestContent" id="manifest-content"></div>
+          </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section class="projects" id="projects">
+          <div class="projects__sticky">
+            <span class="sectionLabel">Projects</span>
+            <div class="projectsContent" id="projects-content">
+              <div class="projectCore" id="project-core">
+                <h2 class="projectCore__title" id="project-title" data-text=""></h2>
+                <a class="viewProject" id="project-view" href="#" target="_blank" rel="noreferrer">
+                  View <span class="viewProject__arrow">&#8594;</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- SERVICES / WHAT I BUILD -->
+        <section class="servicesSection" id="services">
+          <div class="services__sticky">
+            <span class="sectionLabel">What I Build</span>
+            <div class="servicesSection__content">
+              <h2 class="servicesSection__quote" id="services-quote"></h2>
+              <p class="servicesSection__tagline" id="services-tagline"></p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section class="aboutSection" id="about">
+          <div class="about__sticky">
+            <span class="sectionLabel">About</span>
+            <div class="aboutSection__content">
+              <div class="aboutSection__leftPane" id="about-left"></div>
+              <div class="aboutSection__sphereSide"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section class="contactSection" id="contact">
+          <span class="sectionLabel">Contact</span>
+          <div class="contactSection__content">
+            <div class="contactSection__left">
+              <p class="contactSection__availability" id="contact-availability"></p>
+              <h2 class="contactSection__title" id="contact-title"></h2>
+              <div class="contactSection__links">
+                <a class="contactSection__email" id="contact-email" href="#"></a>
+                <div class="contactSection__externalLinks" id="contact-external"></div>
+              </div>
+            </div>
+            <div class="contactSection__right"></div>
+          </div>
+          <p class="contactSection__signature" id="contact-signature"></p>
+        </section>
+      </main>
+
+      <!-- Scroll hint -->
+      <div class="scrollHint" id="scroll-hint" aria-hidden="true">
+        <span class="scrollHint__label">Scroll</span>
+        <span class="scrollHint__mark"></span>
+      </div>
+
+      <!-- Project detail overlay -->
+      <div class="projectDetail" id="project-detail" aria-hidden="true">
+        <div class="projectDetail__backdrop"></div>
+        <nav class="projectDetail__nav">
+          <span class="projectDetail__navTitle" id="detail-nav-title"></span>
+          <button class="projectDetail__navClose" id="detail-close" type="button">
+            <span>&#9679;</span><span>Close</span>
+          </button>
+        </nav>
+        <div class="projectDetail__scroll" id="detail-scroll">
+          <div class="projectDetail__hero">
+            <div class="projectDetail__heroBg" id="detail-hero-bg"></div>
+            <div class="projectDetail__heroContent">
+              <h2 class="projectDetail__heroName" id="detail-name"></h2>
+              <p class="projectDetail__heroBaseline" id="detail-baseline"></p>
+            </div>
+          </div>
+          <div class="conceptSection">
+            <div class="conceptSection__sticky">
+              <span class="conceptSection__label">Concept</span>
+              <p class="conceptSection__phrase" id="detail-concept"></p>
+            </div>
+          </div>
+          <div class="stackRoleSection">
+            <div class="stackRoleSection__separator"></div>
+            <div class="stackRoleSection__content">
+              <div class="stackRoleSection__item">
+                <span class="stackRoleSection__label">Stack</span>
+                <span class="stackRoleSection__value" id="detail-stack"></span>
+              </div>
+              <div class="stackRoleSection__item stackRoleSection__item--right">
+                <span class="stackRoleSection__label">Role</span>
+                <span class="stackRoleSection__value" id="detail-role"></span>
+              </div>
+            </div>
+          </div>
+          <div class="projectDetail__projectNav">
+            <button class="projectDetail__projectNavBtn" id="detail-prev" type="button">&#8592; Previous project</button>
+            <button class="projectDetail__projectNavBtn" id="detail-next" type="button">Next project &#8594;</button>
+          </div>
+        </div>
+      </div>
+      <div class="plasmaFlash" id="plasma-flash"></div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

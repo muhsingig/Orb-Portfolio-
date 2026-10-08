@@ -3,25 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="description" content="Creative Front-End Developer crafting immersive custom websites with Three.js, WebGL and GSAP." />
+    <title>Muhsin Gigani | Marketing + Vibe Coding</title>
+    <meta name="description" content="Muhsin Gigani is a Digital Strategy student in Mumbai who turns brand strategy into live sites, start to ship. Social media, SEO, GenAI and websites built with Claude Code." />
     <meta name="theme-color" content="#070707" />
-    <title>Creative Developer Portfolio</title>
+    <meta property="og:title" content="Muhsin Gigani | Marketing + Vibe Coding" />
+    <meta property="og:description" content="I turn brand strategy into live sites, start to ship." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="preconnect" href="https://api.fontshare.com" />
     <link
-      href="https://api.fontshare.com/v2/css?f[]=clash-display@600,700&f[]=switzer@300,400,500,600&display=swap"
+      href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=switzer@300,400,500,600&display=swap"
       rel="stylesheet"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="app">
       <!-- Fixed WebGL canvas -->
       <canvas id="orb-canvas" aria-hidden="true"></canvas>
+      <!-- Film grain -->
+      <div class="grain" aria-hidden="true"></div>
 
       <!-- Shockwave ring (fires at the intro burst) -->
       <div class="shockwave" id="shockwave" aria-hidden="true"></div>
 
       <!-- Preloader -->
       <div class="preloader" id="preloader">
+        <div class="preloader__corner preloader__corner--tl">Muhsin Gigani</div>
+        <div class="preloader__corner preloader__corner--tr">Portfolio &copy;2026</div>
+        <div class="preloader__corner preloader__corner--bl">
+          <span class="preloader__logo" id="preloader-logo"></span>
+          <span class="preloader__count" id="preloader-count">000</span>
+          <span class="preloader__countLabel">Charging the core</span>
+        </div>
+        <div class="preloader__corner preloader__corner--br">Mumbai, IN</div>
+        <div class="preloader__bar"><span id="preloader-bar"></span></div>
         <div class="preloader__ctaWrap">
           <button class="preloader__cta glitch-btn" id="enter-btn" type="button">
             <span class="cta-glitch" data-text="ENTER">ENTER</span>
@@ -29,10 +48,35 @@
         </div>
       </div>
 
+      <!-- Header -->
+      <header class="siteHeader" id="site-header">
+        <a class="siteHeader__brand" href="#hero" data-nav="#hero" data-cursor="Top">
+          <span class="siteHeader__logo" id="header-logo"></span>
+          <span class="siteHeader__name" id="header-name"></span>
+        </a>
+        <div class="siteHeader__section" aria-hidden="true">
+          <span class="siteHeader__sectionIdx" id="header-section-idx">00</span>
+          <span class="siteHeader__sectionName" id="header-section-name">Intro</span>
+        </div>
+        <nav class="siteHeader__nav" id="header-nav" aria-label="Primary"></nav>
+        <div class="siteHeader__clock" id="header-clock" aria-label="Local time in Mumbai"></div>
+        <button class="siteHeader__menuBtn" id="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span>
+          <span class="sr-only">Menu</span>
+        </button>
+      </header>
+      <div class="mobileMenu" id="mobile-menu" aria-hidden="true">
+        <nav class="mobileMenu__nav" id="mobile-nav" aria-label="Mobile"></nav>
+        <div class="mobileMenu__foot" id="mobile-foot"></div>
+      </div>
+      <div class="scrollProgress" aria-hidden="true"><span id="scroll-progress"></span></div>
+
       <main id="main">
-        <!-- HERO -->
-        <section class="heroSection" id="hero">
+        <!-- 00 HERO -->
+        <section class="heroSection" id="hero" data-label="Intro" data-index="00">
           <div class="heroOverlay">
+            <div class="heroSide heroSide--left" id="hero-left"></div>
+            <div class="heroSide heroSide--right" id="hero-right"></div>
             <div class="heroOverlay__titleBlock">
               <div class="heroOverlay__titleStack" id="hero-title-stack">
                 <svg class="heroOverlay__elec" id="hero-elec" aria-hidden="true">
@@ -49,49 +93,28 @@
                 <h1 class="heroOverlay__title heroOverlay__title--outline" id="hero-title-outline"></h1>
                 <span class="heroOverlay__title heroOverlay__title--fill" id="hero-title-fill" aria-hidden="true"></span>
               </div>
-              <p class="heroOverlay__baseline" id="hero-baseline"></p>
-            </div>
-          </div>
-        </section>
-
-        <!-- MANIFEST -->
-        <section class="manifest" id="manifest">
-          <div class="manifest__sticky">
-            <span class="sectionLabel">Manifest</span>
-            <div class="manifestContent" id="manifest-content"></div>
-          </div>
-        </section>
-
-        <!-- PROJECTS -->
-        <section class="projects" id="projects">
-          <div class="projects__sticky">
-            <span class="sectionLabel">Projects</span>
-            <div class="projectsContent" id="projects-content">
-              <div class="projectCore" id="project-core">
-                <h2 class="projectCore__title" id="project-title" data-text=""></h2>
-                <a class="viewProject" id="project-view" href="#" target="_blank" rel="noreferrer">
-                  View <span class="viewProject__arrow">&#8594;</span>
-                </a>
+              <div class="heroOverlay__baseRow">
+                <p class="heroOverlay__baseline" id="hero-baseline"></p>
+                <p class="heroOverlay__ticker" id="hero-ticker"></p>
               </div>
             </div>
+            <a class="heroBadge" id="hero-badge" href="#manifest" data-nav="#manifest" data-cursor="Scroll" aria-label="Scroll down"></a>
           </div>
         </section>
 
-        <!-- SERVICES / WHAT I BUILD -->
-        <section class="servicesSection" id="services">
-          <div class="services__sticky">
-            <span class="sectionLabel">What I Build</span>
-            <div class="servicesSection__content">
-              <h2 class="servicesSection__quote" id="services-quote"></h2>
-              <p class="servicesSection__tagline" id="services-tagline"></p>
-            </div>
+        <!-- 01 MANIFEST -->
+        <section class="manifest" id="manifest" data-label="Manifesto" data-index="01">
+          <div class="manifest__sticky">
+            <span class="sectionLabel"><span class="sectionLabel__idx">01</span>Manifesto</span>
+            <div class="manifestContent" id="manifest-content"></div>
+            <div class="manifestMeter" id="manifest-meter" aria-hidden="true"></div>
           </div>
         </section>
 
-        <!-- ABOUT -->
-        <section class="aboutSection" id="about">
+        <!-- 02 ABOUT -->
+        <section class="aboutSection" id="about" data-label="About" data-index="02">
           <div class="about__sticky">
-            <span class="sectionLabel">About</span>
+            <span class="sectionLabel"><span class="sectionLabel__idx">02</span>About</span>
             <div class="aboutSection__content">
               <div class="aboutSection__leftPane" id="about-left"></div>
               <div class="aboutSection__sphereSide"></div>
@@ -99,21 +122,111 @@
           </div>
         </section>
 
-        <!-- CONTACT -->
-        <section class="contactSection" id="contact">
-          <span class="sectionLabel">Contact</span>
+        <!-- 03 JOURNEY -->
+        <section class="journeySection" id="journey" data-label="Journey" data-index="03">
+          <div class="journeySection__grid">
+            <aside class="journeySection__aside">
+              <div class="journeySection__sticky">
+                <span class="sectionLabel sectionLabel--inline"><span class="sectionLabel__idx">03</span>Experience</span>
+                <h2 class="journeySection__title splitReveal" id="journey-title"></h2>
+                <p class="journeySection__intro fadeUp" id="journey-intro"></p>
+                <div class="journeySection__year" id="journey-year" aria-hidden="true">2026</div>
+              </div>
+            </aside>
+            <div class="journeySection__list">
+              <div class="journeyLine" aria-hidden="true"><span id="journey-line-fill"></span></div>
+              <ol class="journeyEntries" id="journey-entries"></ol>
+            </div>
+          </div>
+        </section>
+
+        <!-- 04 WORK -->
+        <section class="projects" id="projects" data-label="Work" data-index="04">
+          <div class="projects__sticky">
+            <span class="sectionLabel"><span class="sectionLabel__idx">04</span>Selected Work</span>
+            <div class="projectsContent" id="projects-content">
+              <ol class="projectIndex" id="project-index" aria-label="Projects"></ol>
+              <div class="projectCore" id="project-core">
+                <div class="projectCore__electric" id="project-electric" aria-hidden="true"></div>
+                <div class="projectCore__text">
+                  <div class="projectCore__meta">
+                    <span class="projectCore__num" id="project-num">01 / 07</span>
+                    <span class="projectCore__cat" id="project-cat"></span>
+                  </div>
+                  <h2 class="projectCore__title" id="project-title" data-text=""></h2>
+                  <p class="projectCore__baseline" id="project-baseline"></p>
+                  <div class="projectCore__actions">
+                    <a class="viewProject" id="project-view" href="#" data-cursor="Open">
+                      Open case <span class="viewProject__arrow">&#8594;</span>
+                    </a>
+                    <a class="liveProject" id="project-live" href="#" target="_blank" rel="noreferrer" data-cursor="Visit">
+                      Live site <span>&#8599;</span>
+                    </a>
+                  </div>
+                </div>
+                <div class="projectCore__shot" id="project-shot"></div>
+              </div>
+              <div class="projectRail" aria-hidden="true">
+                <span class="projectRail__label">Inside the core</span>
+                <span class="projectRail__track"><span class="projectRail__fill" id="project-rail-fill"></span></span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 05 TOOLKIT -->
+        <section class="toolkitSection" id="toolkit" data-label="Toolkit" data-index="05">
+          <span class="sectionLabel sectionLabel--flow"><span class="sectionLabel__idx">05</span>Toolkit</span>
+          <header class="toolkitSection__head">
+            <h2 class="toolkitSection__title splitReveal" id="toolkit-title"></h2>
+            <p class="toolkitSection__intro fadeUp" id="toolkit-intro"></p>
+          </header>
+          <div class="pillars" id="pillars"></div>
+          <div class="logoStrip">
+            <span class="logoStrip__label">Shipping with</span>
+            <div class="logoStrip__loop" id="logo-loop"></div>
+          </div>
+          <div class="marquee" id="marquee" aria-hidden="true"></div>
+          <div class="tabsBlock">
+            <h3 class="tabsBlock__title splitReveal" id="tabs-title"></h3>
+            <ol class="tabsList" id="tabs-list"></ol>
+          </div>
+        </section>
+
+        <!-- 06 CERTIFICATES -->
+        <section class="certSection" id="certificates" data-label="Certificates" data-index="06">
+          <span class="sectionLabel sectionLabel--flow"><span class="sectionLabel__idx">06</span>Certificates</span>
+          <header class="certSection__head">
+            <div class="certSection__intro">
+              <h2 class="certSection__title splitReveal" id="certs-title"></h2>
+              <p class="certSection__lead fadeUp" id="certs-intro"></p>
+              <dl class="certSection__facts fadeUp" id="certs-facts"></dl>
+            </div>
+            <div class="certSection__stack" id="cert-stack"></div>
+          </header>
+          <div class="certGallery" id="cert-gallery"></div>
+        </section>
+
+        <!-- 07 CONTACT -->
+        <section class="contactSection" id="contact" data-label="Contact" data-index="07">
+          <span class="sectionLabel"><span class="sectionLabel__idx">07</span>Contact</span>
           <div class="contactSection__content">
             <div class="contactSection__left">
-              <p class="contactSection__availability" id="contact-availability"></p>
-              <h2 class="contactSection__title" id="contact-title"></h2>
+              <p class="contactSection__eyebrow" id="contact-eyebrow"></p>
+              <h2 class="sr-only">Let's ship it.</h2>
+              <div class="contactSection__title" id="contact-title" aria-hidden="true"></div>
               <div class="contactSection__links">
-                <a class="contactSection__email" id="contact-email" href="#"></a>
+                <a class="contactSection__email" id="contact-email" href="#" data-cursor="Email"></a>
                 <div class="contactSection__externalLinks" id="contact-external"></div>
               </div>
             </div>
             <div class="contactSection__right"></div>
           </div>
-          <p class="contactSection__signature" id="contact-signature"></p>
+          <footer class="contactSection__foot">
+            <p class="contactSection__signature" id="contact-signature"></p>
+            <p class="contactSection__credit" id="contact-credit"></p>
+            <a class="contactSection__top" href="#hero" data-nav="#hero" data-cursor="Top">Back to top &#8593;</a>
+          </footer>
         </section>
       </main>
 
@@ -123,28 +236,57 @@
         <span class="scrollHint__mark"></span>
       </div>
 
+      <!-- Custom cursor -->
+      <div class="cursor" id="cursor" aria-hidden="true">
+        <span class="cursor__dot"></span>
+        <span class="cursor__ring"><span class="cursor__label" id="cursor-label"></span></span>
+      </div>
+
       <!-- Project detail overlay -->
-      <div class="projectDetail" id="project-detail" aria-hidden="true">
+      <div class="projectDetail" id="project-detail" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="detail-name">
         <div class="projectDetail__backdrop"></div>
         <nav class="projectDetail__nav">
-          <span class="projectDetail__navTitle" id="detail-nav-title"></span>
-          <button class="projectDetail__navClose" id="detail-close" type="button">
+          <span class="projectDetail__navTitle"><span id="detail-nav-num"></span><span id="detail-nav-title"></span></span>
+          <button class="projectDetail__navClose" id="detail-close" type="button" data-cursor="Close">
             <span>&#9679;</span><span>Close</span>
           </button>
         </nav>
-        <div class="projectDetail__scroll" id="detail-scroll">
+        <div class="projectDetail__scroll" id="detail-scroll" data-lenis-prevent>
           <div class="projectDetail__hero">
             <div class="projectDetail__heroBg" id="detail-hero-bg"></div>
+            <span class="projectDetail__heroNum" id="detail-hero-num" aria-hidden="true"></span>
             <div class="projectDetail__heroContent">
+              <span class="projectDetail__heroCat" id="detail-cat"></span>
               <h2 class="projectDetail__heroName" id="detail-name"></h2>
               <p class="projectDetail__heroBaseline" id="detail-baseline"></p>
+              <a class="projectDetail__live" id="detail-live" href="#" target="_blank" rel="noreferrer" data-cursor="Visit">
+                Visit live site <span>&#8599;</span>
+              </a>
             </div>
           </div>
           <div class="conceptSection">
-            <div class="conceptSection__sticky">
-              <span class="conceptSection__label">Concept</span>
-              <p class="conceptSection__phrase" id="detail-concept"></p>
+            <span class="conceptSection__label">The idea</span>
+            <p class="conceptSection__phrase" id="detail-concept"></p>
+          </div>
+          <div class="previewSection" id="detail-preview">
+            <span class="conceptSection__label">Live preview</span>
+            <div class="browserFrame">
+              <div class="browserFrame__bar">
+                <span class="browserFrame__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="browserFrame__url" id="detail-preview-url"></span>
+                <a class="browserFrame__open" id="detail-preview-open" href="#" target="_blank" rel="noreferrer" data-cursor="Visit">Open &#8599;</a>
+              </div>
+              <div class="browserFrame__viewport">
+                <span class="browserFrame__loading">Loading the live site&hellip;</span>
+                <iframe id="detail-preview-frame" title="Live preview" referrerpolicy="no-referrer"
+                  sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+              </div>
             </div>
+            <p class="previewSection__hint">The real site, running live. Scroll inside it.</p>
+          </div>
+          <div class="highlightsSection">
+            <span class="conceptSection__label">What went into it</span>
+            <ol class="highlightsSection__list" id="detail-highlights"></ol>
           </div>
           <div class="stackRoleSection">
             <div class="stackRoleSection__separator"></div>
@@ -153,15 +295,23 @@
                 <span class="stackRoleSection__label">Stack</span>
                 <span class="stackRoleSection__value" id="detail-stack"></span>
               </div>
-              <div class="stackRoleSection__item stackRoleSection__item--right">
+              <div class="stackRoleSection__item">
                 <span class="stackRoleSection__label">Role</span>
                 <span class="stackRoleSection__value" id="detail-role"></span>
+              </div>
+              <div class="stackRoleSection__item">
+                <span class="stackRoleSection__label">Timeframe</span>
+                <span class="stackRoleSection__value" id="detail-time"></span>
+              </div>
+              <div class="stackRoleSection__item">
+                <span class="stackRoleSection__label">Year</span>
+                <span class="stackRoleSection__value" id="detail-year"></span>
               </div>
             </div>
           </div>
           <div class="projectDetail__projectNav">
-            <button class="projectDetail__projectNavBtn" id="detail-prev" type="button">&#8592; Previous project</button>
-            <button class="projectDetail__projectNavBtn" id="detail-next" type="button">Next project &#8594;</button>
+            <button class="projectDetail__projectNavBtn" id="detail-prev" type="button" data-cursor="Prev">&#8592; <span id="detail-prev-name">Previous</span></button>
+            <button class="projectDetail__projectNavBtn" id="detail-next" type="button" data-cursor="Next"><span id="detail-next-name">Next</span> &#8594;</button>
           </div>
         </div>
       </div>

@@ -1,15 +1,28 @@
 import './style.css';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { buildSections } from './sections.js';
 import { initScroll } from './scroll.js';
 import { initPreloader, INTRO } from './preloader.js';
 import { initProjectDetail } from './projectDetail.js';
+import {
+  initSmoothScroll, initChrome, initCursor, initSpotlight,
+  initMagnetic, initReveals,
+} from './ui.js';
+import { mountIslands } from './react/islands.jsx';
 
 // Keep scroll position at top on load (matches preloader gate)
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 window.scrollTo(0, 0);
 
 buildSections();
+// React Bits components live in slots that buildSections just created
+try {
+  mountIslands();
+} catch (err) {
+  console.error('React islands failed to mount:', err);
+}
+initSmoothScroll();
 
 // Wire the ENTER button before anything heavy can fail —
 // the preloader must always be dismissible.
@@ -65,6 +78,9 @@ initPreloader(() => {
   setTimeout(() => onEnterHint(true), INTRO.charge + INTRO.burst + INTRO.settle + 300);
 });
 
+initChrome();
+initCursor();
+initSpotlight();
 initProjectDetail();
 
 // WebGL orb. If it fails (driver, blocklist, remote desktop),
@@ -90,4 +106,22 @@ initProjectDetail();
   } catch (err) {
     console.error('Scroll choreography failed:', err);
   }
+
+  // React islands (and lazy images) settle after the first measurement:
+  // re-measure every scroll range whenever the page height changes.
+  let lastHeight = 0;
+  let refreshTimer;
+  new ResizeObserver(() => {
+    const h = document.documentElement.scrollHeight;
+    if (Math.abs(h - lastHeight) < 2) return;
+    lastHeight = h;
+    clearTimeout(refreshTimer);
+    refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 150);
+  }).observe(document.getElementById('main'));
+
+  initReveals();
+  initMagnetic('.magnetic, .preloader__cta, .liveProject, .viewProject, .projectDetail__live, .contactSection__email');
+
+  // Fonts change line lengths and section heights: re-measure once loaded
+  if (document.fonts) document.fonts.ready.then(() => ScrollTrigger.refresh());
 })();

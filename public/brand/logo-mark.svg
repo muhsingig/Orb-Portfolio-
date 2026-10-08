@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Muhsin Gigani">
+  <defs>
+    <linearGradient id="c1-ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8ccd"/>
+      <stop offset="0.5" stop-color="#f74fa7"/>
+      <stop offset="1" stop-color="#9b5cff"/>
+    </linearGradient>
+    <radialGradient id="c1-glass" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#3a1440"/>
+      <stop offset="0.72" stop-color="#160a1f"/>
+      <stop offset="0.94" stop-color="#2a0f33"/>
+      <stop offset="1" stop-color="#4a1a55"/>
+    </radialGradient>
+    <radialGradient id="c1-core" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#fff"/>
+      <stop offset="0.35" stop-color="#ffc2e4" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#f74fa7" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="c1-glow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2"/></filter>
+  </defs>
+  <circle cx="60" cy="60" r="44" fill="url(#c1-glass)"/>
+  <path d="M91.11 28.89A44 44 0 1 0 104 60H92" fill="none" stroke="url(#c1-ring)" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="60" cy="63" r="17" fill="url(#c1-core)"/>
+  <polyline points="33,77 44,45 60,66 76,45 87,77" fill="none" stroke="#9db8ff" stroke-width="7" stroke-linejoin="miter" filter="url(#c1-glow)" opacity="0.9"/>
+  <polyline points="33,77 44,45 60,66 76,45 87,77" fill="none" stroke="#fff" stroke-width="4.2" stroke-linejoin="miter" stroke-linecap="round"/>
+</svg>

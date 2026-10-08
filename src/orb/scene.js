@@ -20,15 +20,22 @@ export const orbState = {
     glass: 0.5,      // shell visibility
     dim: 0,          // global dimming 0..1 (manifest "ghost" state)
     dive: 0,         // 0 = normal bg, 1 = inside-the-orb deep blue bg
-    theme: 0,        // 0 = pink/blue, 1 = warm gold/orange
+    theme: 0,        // 0 = pink/blue, 1 = electric violet
     cool: 0,         // 0 = normal, 1 = icy blue surge (intro charge/burst)
     fogAlpha: 0.45,  // background fog amount
     fogSpeed: 0.3,
     opacity: 0,      // master orb opacity (fades in after preloader)
+    dR: 0, dG: 0, dB: 0, // inside-the-orb colour (linear RGB), set per project
   },
   current: null,
   ease: 0.075,
 };
+// Linear-space RGB for a hex colour, in the shape the dive keys expect
+export function diveRGB(hex) {
+  const c = new THREE.Color(hex);
+  return { dR: c.r, dG: c.g, dB: c.b };
+}
+Object.assign(orbState.target, diveRGB('#16166e'));
 orbState.current = { ...orbState.target };
 // Dev hook for inspecting/driving the orb from the console
 if (import.meta.env.DEV) window.__orbState = orbState;
@@ -39,9 +46,9 @@ const COL = {
   plasmaPinkHot: new THREE.Color('#ff8ccd'),
   filamentBlue: new THREE.Color('#5b5bff'),
   filamentWhite: new THREE.Color('#f4f8ff'),
-  warmGold: new THREE.Color('#e6953c'),
-  warmCore: new THREE.Color('#ffb36b'),
-  warmFil: new THREE.Color('#ffd9a8'),
+  violet: new THREE.Color('#9b5cff'),
+  violetHot: new THREE.Color('#cfa8ff'),
+  violetFil: new THREE.Color('#f1e6ff'),
   diveBg: new THREE.Color('#16166e'),
   coolShell: new THREE.Color('#9fbcff'),
   coolHot: new THREE.Color('#f0f6ff'),
@@ -438,7 +445,8 @@ const BG_FRAG = /* glsl */ `
     if (uDive > 0.001) {
       vec3 dive = uDiveColor * (0.65 + 0.6 * (1.0 - dOrb));
       vec3 dp = vec3(uv * asp * 3.0, uTime * 0.07);
-      dive += vec3(0.05, 0.05, 0.25) * (0.62 * snoise(dp) + 0.32 * snoise(dp * 2.07));
+      vec3 tint = mix(vec3(0.05, 0.05, 0.25), uDiveColor * 3.2, 0.8);
+      dive += tint * (0.62 * snoise(dp) + 0.32 * snoise(dp * 2.07));
       col = mix(col, dive, uDive);
     }
 
@@ -717,6 +725,8 @@ const tmpColor4 = new THREE.Color();
 
 function render() {
   const dt = clock.getDelta();
+  // A case study covers the whole screen: don't burn the GPU behind it
+  if (document.documentElement.classList.contains('overlay-settled')) return;
   const t = clock.elapsedTime;
   perfCheck(dt);
   const s = orbState;
@@ -730,7 +740,11 @@ function render() {
   // Position & scale: x/y given in fractions of half-viewport
   group.position.x = c.x * worldHalf.w;
   group.position.y = c.y * worldHalf.h;
-  const sc = Math.max(0.001, c.scale);
+  // Portrait screens: shrink the orb so it doesn't swallow the width
+  const mobileK = camera.aspect < 0.9
+    ? 0.62 + 0.38 * Math.min(1, Math.max(0, (camera.aspect - 0.45) / 0.45))
+    : 1;
+  const sc = Math.max(0.001, c.scale * mobileK);
   group.scale.setScalar(sc);
 
   const dim = c.dim;
@@ -739,8 +753,8 @@ function render() {
   const cool = c.cool;
 
   // Theme colors
-  const corePink = tmpColor.copy(COL.plasmaPink).lerp(COL.warmGold, theme);
-  const coreHot = tmpColor2.copy(COL.plasmaPinkHot).lerp(COL.warmCore, theme);
+  const corePink = tmpColor.copy(COL.plasmaPink).lerp(COL.violet, theme);
+  const coreHot = tmpColor2.copy(COL.plasmaPinkHot).lerp(COL.violetHot, theme);
   // Intro surge: halo/shell/fog shift fully to icy blue-white while
   // the core keeps most of its pink (matches the original's burst).
   const shellCol = tmpColor4.copy(corePink);
@@ -756,7 +770,7 @@ function render() {
   coreU.uGlow.value = c.coreGlow * (1 - dim * 0.75) * fade;
   coreU.uOpacity.value = fade;
 
-  const filBlue = tmpColor3.copy(COL.filamentBlue).lerp(COL.warmFil, theme);
+  const filBlue = tmpColor3.copy(COL.filamentBlue).lerp(COL.violetFil, theme);
   if (cool > 0.001) filBlue.lerp(COL.coolFil, cool * 0.7);
   glowU.uTime.value = t;
   glowU.uSpeed.value = c.filamentSpeed;
@@ -793,6 +807,7 @@ function render() {
   bgU.uFogAlpha.value = c.fogAlpha * (1 - dim * 0.6) * fade;
   bgU.uFogSpeed.value = c.fogSpeed;
   bgU.uDive.value = c.dive;
+  bgU.uDiveColor.value.setRGB(c.dR, c.dG, c.dB);
   // orb position in uv coords for the bg gradient
   bgU.uOrb.value.set(0.5 + c.x * 0.5, 0.5 + c.y * 0.5);
 

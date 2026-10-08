@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Muhsin Gigani">
+  <defs>
+    <linearGradient id="mi-ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff8ccd"/>
+      <stop offset="0.5" stop-color="#f74fa7"/>
+      <stop offset="1" stop-color="#9b5cff"/>
+    </linearGradient>
+  </defs>
+  <circle cx="60" cy="60" r="50" fill="#150a1c"/>
+  <path d="M92.53 27.47A46 46 0 1 0 106 60H90" fill="none" stroke="url(#mi-ring)" stroke-width="12" stroke-linecap="round"/>
+  <polyline points="32,80 44,42 60,66 76,42 88,80" fill="none" stroke="#fff" stroke-width="9.5" stroke-linejoin="round" stroke-linecap="round"/>
+</svg>

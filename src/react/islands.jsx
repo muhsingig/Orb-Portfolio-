@@ -25,10 +25,12 @@ import { LogoLoop } from '@/components/LogoLoop';
 import TextPressure from '@/components/TextPressure';
 import CardSwap, { Card } from '@/components/CardSwap';
 import GlareHover from '@/components/GlareHover';
+import ElectricLogo from '@/components/ElectricLogo';
+import ProfileCard from '@/components/ProfileCard';
 
 import { site, nav, projects, toolkit, certifications } from '../data.js';
 import { subscribe, getState, setState } from '../bus.js';
-import { lockScroll } from '../ui.js';
+import { lockScroll, scrollToTarget } from '../ui.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -91,6 +93,73 @@ function BrandIcon({ name, tone = 'brand', className = '' }) {
   else if (b.gradient) style = { fill: `url(#brand-grad-${brandSlug(name)})` };
   else style = { color: b.color };
   return <Icon className={`brandIcon ${className}`} style={style} aria-hidden="true" focusable="false" />;
+}
+
+// ---------------------------------------------------------------
+// Logo: plasma crawls along the orbit G and the bolt M. The traced shape
+// (ring + bolt only) is scaled so it sits exactly on the SVG logo
+// underneath; the overlay is 1.8x the logo so arcs have room to jump.
+// ---------------------------------------------------------------
+function LogoElectric() {
+  return (
+    <ElectricLogo
+      src="/brand/logo-electric.svg"
+      color="#ff9fd8"
+      glowColor="#9b5cff"
+      scale={0.44}
+      intensity={0.75}
+      glow={0.7}
+      thickness={1.2}
+      strands={3}
+      bend={0.5}
+      crackle={1.2}
+      arcs={0.8}
+      flicker={0.5}
+      speed={2}
+      cursorRadius={40}
+    />
+  );
+}
+
+// ---------------------------------------------------------------
+// About: React Bits ProfileCard. Mounted the first time it scrolls into
+// view so its intro tilt plays where it can be seen.
+// ---------------------------------------------------------------
+function AboutCard() {
+  const ref = useRef(null);
+  const [shown, setShown] = useState(false);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return undefined;
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setShown(true);
+      io.disconnect();
+    }, { threshold: 0.2 });
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
+  return (
+    <div ref={ref} className={`aboutCard__frame${shown ? ' is-in' : ''}`}>
+      {shown && (
+        <ProfileCard
+          avatarUrl="/about/muhsin-cutout.webp"
+          miniAvatarUrl="/about/muhsin-mini.webp"
+          iconUrl="/about/holo-pattern.svg"
+          grainUrl="/about/grain.webp"
+          innerGradient="linear-gradient(145deg, rgba(155, 92, 255, 0.55) 0%, rgba(247, 79, 167, 0.3) 100%)"
+          behindGlowColor="rgba(185, 140, 255, 0.6)"
+          behindGlowSize="50%"
+          name={site.displayName}
+          title="Marketing + Vibe Coding"
+          handle="muhsin-gigani"
+          status="Mumbai, India"
+          contactText="Contact"
+          onContactClick={() => scrollToTarget('#contact')}
+        />
+      )}
+    </div>
+  );
 }
 
 // ---------------------------------------------------------------
@@ -579,6 +648,10 @@ export function mountIslands() {
   };
 
   mount('header-nav', <HeaderNav />);
+  mount('header-electric', <LogoElectric />);
+  mount('preloader-electric', <LogoElectric />);
+  mount('about-card', <AboutCard />);
+  mount('about-card-m', <AboutCard />);
 
   mount('hero-ticker-word', <HeroRoles />);
   mount('project-electric', <ProjectElectric />);

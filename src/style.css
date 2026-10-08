@@ -196,10 +196,14 @@ main { position: relative; z-index: 1; }
 }
 .preloader__countLabel { color: #ffffff80; }
 .preloader__logo {
+  position: relative;
   width: clamp(44px, 4.4vw, 60px);
   height: clamp(44px, 4.4vw, 60px);
   align-self: center;
 }
+/* the plasma only crawls in once the logo has drawn and charged */
+.preloader__logo .logoElectric { opacity: 0; transition: opacity 0.8s ease 0.3s; }
+.preloader__logo.is-charged .logoElectric { opacity: 1; }
 .preloader__logo .logo__ring { stroke-dasharray: 100; stroke-dashoffset: 100; }
 .preloader__logo .logo__bolt polyline { stroke-dasharray: 100; stroke-dashoffset: 100; }
 .preloader__logo .logo__core { opacity: 0; transform: scale(0.4); }
@@ -391,10 +395,21 @@ html.overlay-open .siteHeader { opacity: 0; pointer-events: none; }
 .logo__bolt { transform-box: fill-box; transform-origin: center; }
 
 .siteHeader__logo {
+  position: relative;
   width: 40px;
   height: 40px;
   flex: none;
   transition: filter 0.4s;
+}
+/* React Bits ElectricLogo over the logo: 1.8x its box, centred */
+.logoElectric {
+  position: absolute;
+  left: -40%;
+  top: -40%;
+  width: 180%;
+  height: 180%;
+  z-index: 1;
+  mix-blend-mode: screen;
 }
 /* the bolt crackles every few seconds */
 .siteHeader__logo .logo__bolt { animation: boltFlicker 7s steps(1, end) infinite; }
@@ -2343,7 +2358,79 @@ body.has-cursor button { cursor: none; }
 .aboutSection__currentlyKey { font-weight: 600; }
 .aboutSection__currentlyDash { color: #a4a4a4; }
 .aboutSection__currentlyValue { color: #fff; }
-.aboutSection__sphereSide { min-height: 60vh; }
+.aboutSection__sphereSide {
+  display: grid;
+  place-items: center;
+  min-height: 60vh;
+}
+
+/* About: React Bits ProfileCard in the site palette */
+.aboutCard { display: grid; place-items: center; }
+.aboutCard--mobile { display: none; }
+.aboutCard__frame {
+  opacity: 0;
+  transform: translateY(36px) scale(0.96);
+  transition: opacity 1s var(--ease-out), transform 1.2s var(--ease-out);
+}
+.aboutCard__frame.is-in { opacity: 1; transform: none; }
+.aboutCard .pc-card-wrapper {
+  --sunpillar-1: hsl(330, 100%, 74%);
+  --sunpillar-2: hsl(300, 100%, 76%);
+  --sunpillar-3: hsl(270, 100%, 76%);
+  --sunpillar-4: hsl(248, 100%, 78%);
+  --sunpillar-5: hsl(222, 100%, 76%);
+  --sunpillar-6: hsl(285, 100%, 72%);
+  --sunpillar-clr-1: var(--sunpillar-1);
+  --sunpillar-clr-2: var(--sunpillar-2);
+  --sunpillar-clr-3: var(--sunpillar-3);
+  --sunpillar-clr-4: var(--sunpillar-4);
+  --sunpillar-clr-5: var(--sunpillar-5);
+  --sunpillar-clr-6: var(--sunpillar-6);
+  --card-radius: 28px;
+  touch-action: pan-y; /* stock is none, which traps the page on phones */
+}
+.aboutCard .pc-card {
+  height: min(72vh, 540px);
+  max-height: none;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 30px 80px -30px rgba(0, 0, 0, 0.9);
+}
+.aboutCard .pc-glare {
+  background-image: radial-gradient(
+    farthest-corner circle at var(--pointer-x) var(--pointer-y),
+    hsl(290, 60%, 82%) 12%,
+    hsla(265, 50%, 28%, 0.8) 90%
+  );
+}
+.aboutCard .pc-details { top: 2.4em; }
+.aboutCard .pc-details h3 {
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 3.2vw, 2.6rem);
+  letter-spacing: -0.01em;
+  background-image: linear-gradient(to bottom, #fff, #c6a6ff);
+}
+.aboutCard .pc-details p {
+  top: 0.35rem;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background-image: linear-gradient(to bottom, #fff, #ff8ccd);
+}
+.aboutCard .pc-handle { font-family: var(--body); }
+.aboutCard .pc-status { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em; }
+.aboutCard .pc-contact-btn {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-family: var(--body);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.aboutCard .pc-contact-btn:hover {
+  background: linear-gradient(100deg, var(--pink-hot), #b98cff);
+  border-color: transparent;
+  color: #070707;
+}
 
 /* ------------------------------------------------------------
    07 Contact
@@ -3255,6 +3342,8 @@ body.has-cursor button { cursor: none; }
   .journeySection__year { display: none; }
   .aboutSection__content { grid-template-columns: 1fr; gap: 2rem; padding-top: calc(var(--header-h) + 3rem); }
   .aboutSection__sphereSide { display: none; }
+  .aboutCard--mobile { display: grid; padding: 3.5rem var(--pad-x) 1rem; }
+  .aboutCard--mobile .pc-card { height: min(64svh, 470px); }
   .contactSection__content { grid-template-columns: 1fr; gap: 2rem; }
   .contactSection__right { min-height: 0; }
   .contactForm { max-width: none; margin: 0; }

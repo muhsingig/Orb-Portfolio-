@@ -114,7 +114,7 @@ export function initScroll() {
   function aboutOrb() {
     return isNarrow()
       ? { x: 0.62, y: 0.66, scale: 0.62, dim: 0.4 }
-      : { x: 0.53, y: 0.02, scale: 0.84, dim: 0 };
+      : { x: 0.53, y: 0.02, scale: 1.04, dim: 0 }; // big enough to crest around the profile card
   }
   zone('#about', 'top bottom', 'bottom bottom', (p, z) => {
     const enterFrac = window.innerHeight / Math.max(1, z.st.end - z.st.start);

@@ -54,8 +54,10 @@ export function buildSections() {
 }
 
 function buildHeader() {
-  document.getElementById('header-logo').innerHTML = logoSVG();
-  document.getElementById('preloader-logo').innerHTML = logoSVG();
+  // each logo gets a slot for the React Bits ElectricLogo overlay
+  const electric = (id) => `<span class="logoElectric" id="${id}" aria-hidden="true"></span>`;
+  document.getElementById('header-logo').innerHTML = logoSVG() + electric('header-electric');
+  document.getElementById('preloader-logo').innerHTML = logoSVG() + electric('preloader-electric');
   document.getElementById('header-name').textContent = site.displayName;
   // desktop links are the React Bits Gooey nav (src/react/islands.jsx)
   const mobileNav = document.getElementById('mobile-nav');

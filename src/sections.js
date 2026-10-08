@@ -256,8 +256,60 @@ function buildContact() {
   copy.innerHTML = 'Copy email<span class="contactSection__externalArrow">&#10697;</span>';
   ext.appendChild(copy);
 
+  buildContactForm();
+
   const signature = document.getElementById('contact-signature');
   signature.innerHTML = `<span class="footLogo" aria-hidden="true">${logoSVG()}</span>`;
   signature.appendChild(document.createTextNode(contact.signature));
   document.getElementById('contact-credit').textContent = contact.credit;
+}
+
+// Glass message card over the orb; src/contactForm.js sends it
+function buildContactForm() {
+  const form = document.getElementById('contact-form');
+  const field = (name, label, control) => `
+    <div class="contactForm__field" data-field="${name}">
+      <label class="contactForm__label" for="cf-${name}">${label}</label>
+      <div class="contactForm__control">${control}<span class="contactForm__line" aria-hidden="true"></span></div>
+      <span class="contactForm__error" id="cf-${name}-error" data-error="${name}"></span>
+    </div>`;
+  const chips = contact.form.topics.map((t) => `
+        <label class="contactForm__chip" data-cursor="">
+          <input type="radio" name="topic" value="${t}" aria-describedby="cf-topic-error">
+          <span>${t}</span>
+        </label>`).join('');
+
+  form.innerHTML = `
+    <div class="contactForm__head">
+      <span class="contactForm__title">Send a message</span>
+      <span class="contactForm__note">Goes straight to me</span>
+    </div>
+    <div class="contactForm__body">
+      <div class="contactForm__row">
+        ${field('name', 'Name', '<input id="cf-name" name="name" type="text" autocomplete="name" maxlength="120" placeholder="Your name" aria-describedby="cf-name-error">')}
+        ${field('email', 'Email', '<input id="cf-email" name="email" type="email" autocomplete="email" maxlength="160" placeholder="you@company.com" aria-describedby="cf-email-error">')}
+      </div>
+      <fieldset class="contactForm__field contactForm__topics" data-field="topic">
+        <legend class="contactForm__label">What's it about?</legend>
+        <div class="contactForm__chips">${chips}
+        </div>
+        <span class="contactForm__error" id="cf-topic-error" data-error="topic"></span>
+      </fieldset>
+      ${field('message', 'Message', '<textarea id="cf-message" name="message" rows="4" maxlength="4000" placeholder="The brief, the role or the wild idea." aria-describedby="cf-message-error" data-lenis-prevent></textarea>')}
+      <div class="contactForm__trap" aria-hidden="true">
+        <label>Leave this empty <input name="company" type="text" tabindex="-1" autocomplete="off"></label>
+      </div>
+      <div class="contactForm__actions">
+        <button class="contactForm__submit" type="submit" data-cursor="Send">
+          <span class="contactForm__submitLabel">Send it</span><span class="contactForm__submitArrow" aria-hidden="true">&#8599;</span>
+        </button>
+        <p class="contactForm__status" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+    <div class="contactForm__done" tabindex="-1" hidden>
+      <span class="contactForm__doneMark" aria-hidden="true">${logoSVG()}</span>
+      <p class="contactForm__doneTitle">Message received.</p>
+      <p class="contactForm__doneText">Thanks, <span data-done="name"></span>. I'll get back to you at <span data-done="email"></span>.</p>
+      <button class="contactForm__again" type="button" data-cursor="Again">Send another</button>
+    </div>`;
 }

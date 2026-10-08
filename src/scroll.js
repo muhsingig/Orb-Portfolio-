@@ -15,7 +15,7 @@ const BASE = {
   x: 0, y: 0, scale: 1,
   filamentSpeed: 0.35, filamentLength: 1, filamentAlpha: 1,
   coreGlow: 0.55, halo: 0.55, glass: 0.5, dim: 0,
-  dive: 0, theme: 0, cool: 0,
+  dive: 0, theme: 0, cool: 0, wine: 0,
   fogAlpha: 0.45, fogSpeed: 0.3,
 };
 
@@ -236,16 +236,17 @@ export function initScroll() {
     const t = toolkitOrb();
     const read = smooth(win(p, enterFrac * 1.2, Math.min(1, enterFrac * 2.2)));
     setOrb({
-      x: lerp(t.x, n ? 0.62 : 0.5, e) + read * 0.45,
-      y: lerp(t.y, n ? 0.74 : 0.06, e) + read * 0.35,
-      scale: lerp(1.15, n ? 0.56 : 0.82, e),
-      theme: lerp(0.4, 0.75, e),
+      x: lerp(t.x, n ? 0.62 : 0.6, e) + read * 0.4,
+      y: lerp(t.y, n ? 0.74 : 0.14, e) + read * 0.3,
+      scale: lerp(1.15, n ? 0.56 : 1.0, e),
+      theme: lerp(0.4, 0, e),
+      wine: e, // burgundy while the certificates are on screen
       dim: lerp(0.25, n ? 0.55 : 0, e) + read * 0.55,
-      filamentSpeed: 0.5,
-      coreGlow: 0.7,
-      halo: 0.5,
-      glass: 0.55,
-      fogAlpha: 0.35,
+      filamentSpeed: 0.55,
+      coreGlow: lerp(0.55, 0.95, e),
+      halo: lerp(0.5, 0.95, e),
+      glass: lerp(0.5, 0.75, e),
+      fogAlpha: lerp(0.35, 0.6, e),
     });
   });
 
@@ -255,7 +256,8 @@ export function initScroll() {
     setOrb({
       x: n ? 0.62 : 0.53 + p * 0.05,
       y: n ? 0.66 : 0.02,
-      scale: n ? 0.62 + p * 0.06 : 0.84 + p * 0.1,
+      // big enough to crest around the message card
+      scale: n ? 0.62 + p * 0.06 : 1.04 + p * 0.1,
       theme: 1,
       coreGlow: 0.6 + p * 0.35,
       filamentSpeed: 0.4 + p * 0.3,

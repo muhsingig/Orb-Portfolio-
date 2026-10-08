@@ -22,6 +22,7 @@ export const orbState = {
     dive: 0,         // 0 = normal bg, 1 = inside-the-orb deep blue bg
     theme: 0,        // 0 = pink/blue, 1 = electric violet
     cool: 0,         // 0 = normal, 1 = icy blue surge (intro charge/burst)
+    wine: 0,         // 0 = normal, 1 = burgundy (certificates)
     fogAlpha: 0.45,  // background fog amount
     fogSpeed: 0.3,
     opacity: 0,      // master orb opacity (fades in after preloader)
@@ -50,6 +51,9 @@ const COL = {
   violet: new THREE.Color('#9b5cff'),
   violetHot: new THREE.Color('#cfa8ff'),
   violetFil: new THREE.Color('#f1e6ff'),
+  wine: new THREE.Color('#b8264e'),
+  wineHot: new THREE.Color('#ff9db3'),
+  wineFil: new THREE.Color('#ffd1dc'),
   diveBg: new THREE.Color('#16166e'),
   coolShell: new THREE.Color('#9fbcff'),
   coolHot: new THREE.Color('#f0f6ff'),
@@ -755,10 +759,15 @@ function render() {
   const fade = c.opacity;
   const theme = c.theme;
   const cool = c.cool;
+  const wine = c.wine;
 
   // Theme colors
   const corePink = tmpColor.copy(COL.plasmaPink).lerp(COL.violet, theme);
   const coreHot = tmpColor2.copy(COL.plasmaPinkHot).lerp(COL.violetHot, theme);
+  if (wine > 0.001) {
+    corePink.lerp(COL.wine, wine);
+    coreHot.lerp(COL.wineHot, wine);
+  }
   // Intro surge: halo/shell/fog shift fully to icy blue-white while
   // the core keeps most of its pink (matches the original's burst).
   const shellCol = tmpColor4.copy(corePink);
@@ -775,6 +784,7 @@ function render() {
   coreU.uOpacity.value = fade;
 
   const filBlue = tmpColor3.copy(COL.filamentBlue).lerp(COL.violetFil, theme);
+  if (wine > 0.001) filBlue.lerp(COL.wineFil, wine);
   if (cool > 0.001) filBlue.lerp(COL.coolFil, cool * 0.7);
   glowU.uTime.value = t;
   glowU.uSpeed.value = c.filamentSpeed + sg * 1.4;

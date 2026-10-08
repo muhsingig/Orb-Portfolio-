@@ -512,4 +512,17 @@ export const contact = {
   title: "Let's ship it.",
   signature: `© ${new Date().getFullYear()} Muhsin Gigani. Strategy, start to ship.`,
   credit: 'Built with Claude Code, Three.js & late nights.',
+  // The form posts straight into the Google Form "Portfolio Contact
+  // (website)"; responses land in its Responses tab.
+  form: {
+    action: 'https://docs.google.com/forms/d/e/1FAIpQLSfETE_yq_kVP_G7ziP45b73uGn6nfddrXOEgVb4IW9OnJLkNA/formResponse',
+    entries: {
+      name: 'entry.1276727198',
+      email: 'entry.2840079',
+      topic: 'entry.519969315',
+      message: 'entry.195256657',
+    },
+    // must match the Google Form's choices letter for letter
+    topics: ['Internship or job', 'Freelance project', 'Collaboration', 'Just saying hi'],
+  },
 };

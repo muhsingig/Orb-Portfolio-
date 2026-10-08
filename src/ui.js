@@ -192,6 +192,11 @@ export function initCursor() {
   window.addEventListener('pointerdown', () => cursor.classList.add('is-down'));
   window.addEventListener('pointerup', () => cursor.classList.remove('is-down'));
 
+  // over text fields the native I-beam takes over
+  document.addEventListener('pointerover', (e) => {
+    cursor.classList.toggle('is-text', Boolean(e.target.closest('input:not([type="radio"]), textarea')));
+  });
+
   const INTERACTIVE = 'a, button, [data-cursor]';
   document.addEventListener('pointerover', (e) => {
     const t = e.target.closest(INTERACTIVE);

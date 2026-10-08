@@ -136,6 +136,8 @@ export function initPlasmaClick({ onStrike } = {}) {
   window.addEventListener('click', (e) => {
     // keyboard-triggered clicks report 0,0; no strike in the corner for those
     if (e.detail === 0) return;
+    // nor over form fields, where they'd cover the caret
+    if (e.target.closest?.('input, textarea, select')) return;
     const now = performance.now();
     const s = { x: e.clientX, y: e.clientY, born: now, lastJitter: now, spin: Math.random() * Math.PI };
     makeBolts(s);

@@ -11,6 +11,7 @@ import {
 } from './ui.js';
 import { mountIslands } from './react/islands.jsx';
 import { initPlasmaClick } from './plasmaClick.js';
+import { initContactForm } from './contactForm.js';
 
 // Keep scroll position at top on load (matches preloader gate)
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -83,6 +84,8 @@ initChrome();
 initCursor();
 initSpotlight();
 initProjectDetail();
+// a sent message makes the orb flare (once WebGL is up)
+initContactForm({ onSent: () => { if (orbStateRef) orbStateRef.surge = 1.4; } });
 
 // WebGL orb. If it fails (driver, blocklist, remote desktop),
 // the site must still work as a plain page.

@@ -5,6 +5,7 @@ let state = {
   projectsActive: false, // true while the carousel is on screen
   year: '2026',          // journey year under the reading line
   cert: null,            // index of the certificate open in the viewer
+  section: '00',         // data-index of the section under the reading line
 };
 const listeners = new Set();
 

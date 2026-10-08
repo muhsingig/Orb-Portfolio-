@@ -10,6 +10,7 @@ import {
   initMagnetic, initReveals,
 } from './ui.js';
 import { mountIslands } from './react/islands.jsx';
+import { initPlasmaClick } from './plasmaClick.js';
 
 // Keep scroll position at top on load (matches preloader gate)
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -93,11 +94,14 @@ initProjectDetail();
     // Orb is already faintly alive behind the ENTER screen,
     // and powers up fully once the visitor enters.
     orbState.target.opacity = entered ? 1 : 0.5;
+    // every click crackles at the cursor and makes the orb flare
+    initPlasmaClick({ onStrike: () => { orbState.surge = Math.min(1.4, orbState.surge + 0.85); } });
   } catch (err) {
     console.error('Orb init failed — continuing without WebGL:', err);
     const canvas = document.getElementById('orb-canvas');
     if (canvas) canvas.style.display = 'none';
     document.body.classList.add('no-webgl');
+    initPlasmaClick();
   }
 
   try {

@@ -15,7 +15,7 @@ import {
   LuHandshake, LuHandCoins,
 } from 'react-icons/lu';
 
-import ClickSpark from '@/components/ClickSpark';
+import GooeyNav from '@/components/GooeyNav';
 import RotatingText from '@/components/RotatingText';
 import ElectricBorder from '@/components/ElectricBorder';
 import TiltedCard from '@/components/TiltedCard';
@@ -26,7 +26,7 @@ import TextPressure from '@/components/TextPressure';
 import CardSwap, { Card } from '@/components/CardSwap';
 import GlareHover from '@/components/GlareHover';
 
-import { site, projects, toolkit, certifications } from '../data.js';
+import { site, nav, projects, toolkit, certifications } from '../data.js';
 import { subscribe, getState, setState } from '../bus.js';
 import { lockScroll } from '../ui.js';
 
@@ -91,6 +91,41 @@ function BrandIcon({ name, tone = 'brand', className = '' }) {
   else if (b.gradient) style = { fill: `url(#brand-grad-${brandSlug(name)})` };
   else style = { color: b.color };
   return <Icon className={`brandIcon ${className}`} style={style} aria-hidden="true" focusable="false" />;
+}
+
+// ---------------------------------------------------------------
+// Header: Gooey nav. The pill follows the section being read; a click
+// bursts particles and holds the pill on the target while the page scrolls
+// there.
+// ---------------------------------------------------------------
+const NAV_ITEMS = nav.map((n) => ({
+  label: n.label,
+  href: n.target,
+  attrs: { 'data-nav': n.target },
+}));
+
+function HeaderNav() {
+  const { section } = useBus();
+  const [clicked, setClicked] = useState(null);
+  useEffect(() => {
+    if (clicked === null) return undefined;
+    const t = setTimeout(() => setClicked(null), 1800);
+    return () => clearTimeout(t);
+  }, [clicked]);
+  const fromScroll = nav.findIndex((n) => n.index === section);
+  return (
+    <GooeyNav
+      items={NAV_ITEMS}
+      activeIndex={clicked ?? fromScroll}
+      onSelect={(i) => setClicked(i)}
+      ariaLabel="Primary"
+      animationTime={520}
+      particleCount={14}
+      particleDistances={[78, 10]}
+      particleR={90}
+      timeVariance={260}
+    />
+  );
 }
 
 // ---------------------------------------------------------------
@@ -543,12 +578,7 @@ export function mountIslands() {
     createRoot(node).render(element);
   };
 
-  const sparks = document.createElement('div');
-  sparks.id = 'sparks-root';
-  document.body.appendChild(sparks);
-  mount('sparks-root', (
-    <ClickSpark global sparkColors={['#cfa8ff', '#ff8ccd', '#9db8ff']} sparkCount={10} sparkRadius={28} sparkSize={12} duration={520} />
-  ));
+  mount('header-nav', <HeaderNav />);
 
   mount('hero-ticker-word', <HeroRoles />);
   mount('project-electric', <ProjectElectric />);

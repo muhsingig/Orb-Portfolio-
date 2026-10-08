@@ -2,6 +2,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 import { site } from './data.js';
+import { setState } from './bus.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -95,12 +96,6 @@ export function initChrome() {
     scrollToTarget(resolved);
   });
 
-  // Hover scramble on header links
-  document.querySelectorAll('.siteHeader__link').forEach((a) => {
-    const txt = a.querySelector('.siteHeader__linkText');
-    a.addEventListener('mouseenter', () => scramble(txt, a.dataset.scramble, { duration: 0.4 }));
-  });
-
   // Mobile menu
   const btn = document.getElementById('menu-btn');
   const menu = document.getElementById('mobile-menu');
@@ -172,9 +167,7 @@ export function setHeaderSection(index, label) {
   currentSection = key;
   document.getElementById('header-section-idx').textContent = index;
   scramble(document.getElementById('header-section-name'), label, { duration: 0.45 });
-  document.querySelectorAll('.siteHeader__link').forEach((a) => {
-    a.classList.toggle('is-active', a.querySelector('.siteHeader__linkIdx').textContent === index);
-  });
+  setState({ section: index }); // the Gooey nav follows it
 }
 
 // ----------------------------------------------------------------

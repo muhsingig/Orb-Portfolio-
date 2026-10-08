@@ -29,6 +29,7 @@ export const orbState = {
   },
   current: null,
   ease: 0.075,
+  surge: 0,          // click kick (src/plasmaClick.js); decays on its own
 };
 // Linear-space RGB for a hex colour, in the shape the dive keys expect
 export function diveRGB(hex) {
@@ -735,6 +736,9 @@ function render() {
     s.current[key] += (s.target[key] - s.current[key]) * k;
   }
   const c = s.current;
+  // a click makes the orb flare for a moment, then it settles back
+  const sg = s.surge;
+  s.surge = sg > 0.001 ? sg * Math.pow(0.004, dt) : 0;
   const [bgU, coreU, glowU, fcoreU, tipsU, shellU] = uniformsList;
 
   // Position & scale: x/y given in fractions of half-viewport
@@ -767,28 +771,28 @@ function render() {
   coreU.uTime.value = t;
   coreU.uColor.value.copy(corePink);
   coreU.uHotColor.value.copy(coreHot);
-  coreU.uGlow.value = c.coreGlow * (1 - dim * 0.75) * fade;
+  coreU.uGlow.value = (c.coreGlow + sg * 0.7) * (1 - dim * 0.75) * fade;
   coreU.uOpacity.value = fade;
 
   const filBlue = tmpColor3.copy(COL.filamentBlue).lerp(COL.violetFil, theme);
   if (cool > 0.001) filBlue.lerp(COL.coolFil, cool * 0.7);
   glowU.uTime.value = t;
-  glowU.uSpeed.value = c.filamentSpeed;
+  glowU.uSpeed.value = c.filamentSpeed + sg * 1.4;
   glowU.uLength.value = c.filamentLength;
   glowU.uColorA.value.copy(filBlue);
   glowU.uColorB.value.copy(filBlue).multiplyScalar(0.3);
-  glowU.uAlpha.value = 0.16 * c.filamentAlpha * (1 - dim * 0.8) * fade;
+  glowU.uAlpha.value = (0.16 + sg * 0.14) * c.filamentAlpha * (1 - dim * 0.8) * fade;
   glowU.uWidth.value = 0.022 * (1 + c.filamentSpeed * 0.5);
 
   fcoreU.uTime.value = t;
-  fcoreU.uSpeed.value = c.filamentSpeed;
+  fcoreU.uSpeed.value = c.filamentSpeed + sg * 1.4;
   fcoreU.uLength.value = c.filamentLength;
   fcoreU.uColorB.value.copy(filBlue);
   fcoreU.uAlpha.value = 1.0 * c.filamentAlpha * (1 - dim * 0.85) * fade;
   fcoreU.uWidth.value = 0.009 * (1 + c.filamentSpeed * 0.9);
 
   tipsU.uTime.value = t;
-  tipsU.uSpeed.value = c.filamentSpeed;
+  tipsU.uSpeed.value = c.filamentSpeed + sg * 1.4;
   tipsU.uLength.value = c.filamentLength;
   tipsU.uColor.value.copy(coreHot);
   tipsU.uAlpha.value = 0.9 * c.filamentAlpha * (1 - dim * 0.85) * fade;
@@ -800,7 +804,7 @@ function render() {
   shellU.uDim.value = dim;
 
   halo.material.color.copy(shellCol);
-  halo.material.opacity = c.halo * (1 - dim * 0.85) * fade * (1 - c.dive);
+  halo.material.opacity = (c.halo + sg * 0.35) * (1 - dim * 0.85) * fade * (1 - c.dive);
 
   bgU.uTime.value = t;
   bgU.uFogColor.value.copy(shellCol);
@@ -837,7 +841,7 @@ function render() {
   bgU.uInteractionMult.value = scrollMult * (1 - c.dive);
   bgU.uFilamentBlue.value.copy(filBlue);
 
-  bloomPass.strength = 0.55 + c.filamentSpeed * 0.35 + c.dive * 0.3;
+  bloomPass.strength = 0.55 + c.filamentSpeed * 0.35 + c.dive * 0.3 + sg * 0.45;
 
   composer.render();
 }

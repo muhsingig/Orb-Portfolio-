@@ -121,6 +121,16 @@ a, button { -webkit-tap-highlight-color: transparent; }
   pointer-events: none;
 }
 
+/* click strikes (src/plasmaClick.js) */
+.plasmaClick {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 150;
+  pointer-events: none;
+}
+
 .grain {
   position: fixed;
   inset: -50%;
@@ -423,47 +433,41 @@ html.overlay-open .siteHeader { opacity: 0; pointer-events: none; }
 .siteHeader__sectionIdx::before { content: '('; color: var(--dim); margin-right: 0.15em; }
 .siteHeader__sectionIdx::after { content: ')'; color: var(--dim); margin-left: 0.15em; }
 
-.siteHeader__nav {
-  margin-left: auto;
-  display: flex;
-  gap: clamp(1rem, 2.2vw, 2.2rem);
-}
-.siteHeader__link {
-  position: relative;
-  color: #ffffffd9;
-  text-decoration: none;
+/* React Bits Gooey nav: particles in the orb's palette, the white pill
+   glides with the section being read */
+.siteHeader__nav { margin-left: auto; }
+/* type lives on the container so the pill's overlay label (.effect.text)
+   lines up exactly with the link underneath */
+.siteHeader__nav .gooey-nav-container {
+  --color-1: #ff8ccd;
+  --color-2: #b98cff;
+  --color-3: #9db8ff;
+  --color-4: #ffffff;
   font-family: var(--body);
-  font-size: 0.76rem;
+  font-size: 0.74rem;
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  display: inline-flex;
-  align-items: flex-start;
-  gap: 0.3rem;
-  padding: 0.4rem 0;
-  transition: color 0.25s;
+  line-height: 1.2;
 }
-.siteHeader__linkIdx {
-  font-family: var(--mono);
-  font-size: 0.55rem;
-  color: var(--dim);
-  transition: color 0.25s;
+.siteHeader__nav .gooey-nav-container nav ul {
+  gap: 0.15rem;
+  padding: 0;
+  text-shadow: none;
 }
-.siteHeader__linkText { display: inline-block; min-width: 4ch; }
-.siteHeader__link::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.45s var(--ease-out);
+.siteHeader__nav .gooey-nav-container .effect.text { white-space: nowrap; }
+.siteHeader__nav .gooey-nav-container nav ul li { color: #ffffffd0; }
+.siteHeader__nav .gooey-nav-container nav ul li:hover { color: #fff; }
+.siteHeader__nav .gooey-nav-container nav ul li.active { color: #070707; }
+.siteHeader__nav .gooey-nav-container nav ul li a {
+  padding: 0.62em 1.05em;
+  color: inherit;
+  text-decoration: none;
 }
-.siteHeader__link:hover::after { transform: scaleX(1); transform-origin: left; }
-.siteHeader__link.is-active { color: #fff; }
-.siteHeader__link.is-active .siteHeader__linkIdx { color: var(--pink-hot); }
-.siteHeader__link.is-active::after { transform: scaleX(1); background: var(--pink); }
+.siteHeader__nav .gooey-nav-container .effect {
+  transition: left 0.55s var(--ease-out), width 0.55s var(--ease-out), top 0.55s var(--ease-out), opacity 0.4s;
+}
+.siteHeader__nav .gooey-nav-container.is-idle .effect { opacity: 0; }
 
 .siteHeader__clock {
   font-family: var(--mono);

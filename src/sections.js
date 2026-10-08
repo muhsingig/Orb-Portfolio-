@@ -57,16 +57,9 @@ function buildHeader() {
   document.getElementById('header-logo').innerHTML = logoSVG();
   document.getElementById('preloader-logo').innerHTML = logoSVG();
   document.getElementById('header-name').textContent = site.displayName;
-  const navEl = document.getElementById('header-nav');
+  // desktop links are the React Bits Gooey nav (src/react/islands.jsx)
   const mobileNav = document.getElementById('mobile-nav');
   nav.forEach((item, i) => {
-    const a = el('a', 'siteHeader__link');
-    a.href = item.target;
-    a.dataset.nav = item.target;
-    a.dataset.scramble = item.label;
-    a.innerHTML = `<span class="siteHeader__linkIdx">${item.index}</span><span class="siteHeader__linkText">${item.label}</span>`;
-    navEl.appendChild(a);
-
     const m = el('a', 'mobileMenu__link');
     m.href = item.target;
     m.dataset.nav = item.target;

@@ -1,29 +1,67 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="scroll-locked">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Muhsin Gigani | Marketing + Vibe Coding</title>
     <meta name="description" content="Muhsin Gigani is a Digital Strategy student in Mumbai who turns brand strategy into live sites, start to ship. Social media, SEO, GenAI and websites built with Claude Code." />
     <meta name="theme-color" content="#070707" />
-    <meta property="og:title" content="Muhsin Gigani | Marketing + Vibe Coding" />
-    <meta property="og:description" content="I turn brand strategy into live sites, start to ship." />
+    <link rel="canonical" href="https://orb-portfolio.vercel.app/" />
+
+    <!-- Link previews (LinkedIn, WhatsApp, X, Slack...) -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Muhsin Gigani" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:url" content="https://orb-portfolio.vercel.app/" />
+    <meta property="og:title" content="Muhsin Gigani | Marketing + Vibe Coding" />
+    <meta property="og:description" content="Digital Strategy student in Mumbai. I turn brand strategy into live sites, start to ship." />
+    <meta property="og:image" content="https://orb-portfolio.vercel.app/og-image.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Muhsin Gigani, Marketing + Vibe Coding: a glowing violet plasma orb beside his name and orb logo." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Muhsin Gigani | Marketing + Vibe Coding" />
+    <meta name="twitter:description" content="Digital Strategy student in Mumbai. I turn brand strategy into live sites, start to ship." />
+    <meta name="twitter:image" content="https://orb-portfolio.vercel.app/og-image.jpg" />
+    <meta name="twitter:image:alt" content="Muhsin Gigani, Marketing + Vibe Coding: a glowing violet plasma orb beside his name and orb logo." />
+
+    <!-- Who this site is about, for search engines -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Muhsin Gigani",
+        "url": "https://orb-portfolio.vercel.app/",
+        "image": "https://orb-portfolio.vercel.app/about/muhsin-portrait.jpg",
+        "jobTitle": "Digital Strategy student",
+        "description": "Digital Strategy student in Mumbai who turns brand strategy into live sites: social media, SEO, GenAI and websites built with Claude Code.",
+        "email": "mailto:mdmuhsingigani9@gmail.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Mumbai", "addressCountry": "IN" },
+        "affiliation": { "@type": "CollegeOrUniversity", "name": "Jai Hind College", "url": "https://www.jaihindcollege.com/" },
+        "knowsAbout": ["Digital strategy", "Social media marketing", "Content strategy", "SEO", "Media planning", "Generative AI", "Websites built with Claude Code"],
+        "sameAs": ["https://www.linkedin.com/in/muhsin-gigani"]
+      }
+    </script>
+
+    <!-- the orb still is the largest thing on the first screen: fetch it first -->
+    <link rel="preload" as="image" href="/orb-poster.webp" type="image/webp" fetchpriority="high" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://api.fontshare.com" />
-    <link
-      href="https://api.fontshare.com/v2/css?f[]=clash-display@500,600,700&f[]=switzer@300,400,500,600&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
   </head>
-  <body>
+  <body class="hero-pending fill-pending chrome-pending">
+    <script>
+      // custom cursor on mouse/trackpad devices, set before first paint
+      if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        document.body.classList.add('has-cursor');
+      }
+    </script>
     <div id="app">
       <!-- Fixed WebGL canvas -->
       <canvas id="orb-canvas" aria-hidden="true"></canvas>
+      <!-- Still of the orb, shown until the WebGL one is up -->
+      <div class="orbPoster" aria-hidden="true"></div>
       <!-- Film grain -->
       <div class="grain" aria-hidden="true"></div>
 
@@ -156,9 +194,14 @@
                   <div class="projectCore__meta">
                     <span class="projectCore__num" id="project-num">01 / 07</span>
                     <span class="projectCore__cat" id="project-cat"></span>
+                    <span class="projectCore__case" id="project-case" hidden>Case study</span>
                   </div>
                   <h2 class="projectCore__title" id="project-title" data-text=""></h2>
                   <p class="projectCore__baseline" id="project-baseline"></p>
+                  <p class="projectCore__result" id="project-result">
+                    <strong class="projectCore__resultValue" id="project-result-value"></strong>
+                    <span class="projectCore__resultLabel" id="project-result-label"></span>
+                  </p>
                   <div class="projectCore__actions">
                     <a class="viewProject" id="project-view" href="#" data-cursor="Open">
                       Open case <span class="viewProject__arrow">&#8594;</span>
@@ -265,6 +308,10 @@
               <span class="projectDetail__heroCat" id="detail-cat"></span>
               <h2 class="projectDetail__heroName" id="detail-name"></h2>
               <p class="projectDetail__heroBaseline" id="detail-baseline"></p>
+              <p class="projectDetail__result" id="detail-result">
+                <strong id="detail-result-value"></strong>
+                <span id="detail-result-label"></span>
+              </p>
               <a class="projectDetail__live" id="detail-live" href="#" target="_blank" rel="noreferrer" data-cursor="Visit">
                 Visit live site <span>&#8599;</span>
               </a>
@@ -273,6 +320,14 @@
           <div class="conceptSection">
             <span class="conceptSection__label">The idea</span>
             <p class="conceptSection__phrase" id="detail-concept"></p>
+          </div>
+          <div class="caseSection" id="detail-case" hidden>
+            <span class="conceptSection__label">The case study</span>
+            <ol class="caseSection__steps">
+              <li><span class="caseSection__step">01 · Problem</span><p id="detail-case-problem"></p></li>
+              <li><span class="caseSection__step">02 · What I did</span><p id="detail-case-did"></p></li>
+              <li class="caseSection__result"><span class="caseSection__step">03 · Result</span><p id="detail-case-result"></p></li>
+            </ol>
           </div>
           <div class="previewSection" id="detail-preview">
             <span class="conceptSection__label">Live preview</span>
@@ -323,6 +378,6 @@
       </div>
       <div class="plasmaFlash" id="plasma-flash"></div>
     </div>
-    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/boot.js"></script>
   </body>
 </html>

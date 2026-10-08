@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { orbState, diveRGB } from './orb/scene.js';
+import { orbState, diveRGB } from './orb/state.js';
 import { manifestLines, projects } from './data.js';
 import { setHeaderSection, setNavResolver, scrollToTarget } from './ui.js';
 import { setState } from './bus.js';
@@ -345,6 +345,9 @@ export function initScroll() {
     numEl.textContent = `${String(i + 1).padStart(2, '0')} / ${String(projects.length).padStart(2, '0')}`;
     catEl.textContent = proj.category;
     baseEl.textContent = proj.baseline;
+    document.getElementById('project-result-value').textContent = proj.result?.value ?? '';
+    document.getElementById('project-result-label').textContent = proj.result?.label ?? '';
+    document.getElementById('project-case').hidden = !proj.caseStudy;
     viewEl.dataset.index = String(i);
     const link = proj.url || proj.deck;
     liveEl.hidden = !link;

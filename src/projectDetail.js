@@ -48,7 +48,16 @@ export function initProjectDetail() {
     catEl.textContent = p.category;
     nameEl.textContent = p.name;
     baselineEl.textContent = p.baseline;
+    document.getElementById('detail-result-value').textContent = p.result?.value ?? '';
+    document.getElementById('detail-result-label').textContent = p.result?.label ?? '';
     conceptEl.textContent = p.concept;
+    const cs = p.caseStudy;
+    document.getElementById('detail-case').hidden = !cs;
+    if (cs) {
+      document.getElementById('detail-case-problem').textContent = cs.problem;
+      document.getElementById('detail-case-did').textContent = cs.did;
+      document.getElementById('detail-case-result').textContent = cs.result;
+    }
     highlightsEl.innerHTML = p.highlights
       .map((h, hi) => `<li><span class="highlightsSection__num">${pad2(hi)}</span><p>${h}</p></li>`)
       .join('');

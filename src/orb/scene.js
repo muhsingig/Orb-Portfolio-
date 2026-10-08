@@ -3,44 +3,11 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
 
-// ----------------------------------------------------------------
-// Global animatable state. Scroll choreography tweens `target`,
-// the render loop eases `current` toward it every frame.
-// ----------------------------------------------------------------
-export const orbState = {
-  target: {
-    x: 0,            // orb position, NDC-ish (-1..1)
-    y: 0,
-    scale: 1,        // group scale
-    filamentSpeed: 0.35,
-    filamentLength: 1, // 1 = filaments end at shell. >1 during dive
-    filamentAlpha: 1,
-    coreGlow: 0.55,  // core emissive intensity
-    halo: 0.55,      // halo sprite intensity
-    glass: 0.5,      // shell visibility
-    dim: 0,          // global dimming 0..1 (manifest "ghost" state)
-    dive: 0,         // 0 = normal bg, 1 = inside-the-orb deep blue bg
-    theme: 0,        // 0 = pink/blue, 1 = electric violet
-    cool: 0,         // 0 = normal, 1 = icy blue surge (intro charge/burst)
-    wine: 0,         // 0 = normal, 1 = burgundy (certificates)
-    fogAlpha: 0.45,  // background fog amount
-    fogSpeed: 0.3,
-    opacity: 0,      // master orb opacity (fades in after preloader)
-    dR: 0, dG: 0, dB: 0, // inside-the-orb colour (linear RGB), set per project
-  },
-  current: null,
-  ease: 0.075,
-  surge: 0,          // click kick (src/plasmaClick.js); decays on its own
-};
-// Linear-space RGB for a hex colour, in the shape the dive keys expect
-export function diveRGB(hex) {
-  const c = new THREE.Color(hex);
-  return { dR: c.r, dG: c.g, dB: c.b };
-}
-Object.assign(orbState.target, diveRGB('#16166e'));
-orbState.current = { ...orbState.target };
-// Dev hook for inspecting/driving the orb from the console
-if (import.meta.env.DEV) window.__orbState = orbState;
+// Global animatable state lives in ./state.js (no three.js there) so the
+// scroll director can drive it before this chunk has loaded. Scroll
+// choreography tweens `target`, the render loop eases `current` toward it.
+import { orbState, diveRGB } from './state.js';
+export { orbState, diveRGB };
 
 // Palette
 const COL = {
@@ -123,6 +90,10 @@ const FILAMENT_COUNT = 26;
 const FILAMENT_SEGS = 60;
 
 let renderer, scene, camera, composer, bloomPass;
+// lite: no fast GPU (software WebGL). Lower resolution, no bloom, 30 fps.
+let LITE = false;
+const LITE_STEP = 1 / 30;
+let liteAcc = 0;
 let group, coreMesh, shellMesh, filamentGlow, filamentCore, tips, halo, bgMesh;
 let uniformsList = [];
 let clock = new THREE.Clock();
@@ -477,14 +448,15 @@ function makeHaloTexture() {
   return tex;
 }
 
-export function initOrb(canvas) {
+export function initOrb(canvas, { lite = false } = {}) {
+  LITE = lite;
   renderer = new THREE.WebGLRenderer({
     canvas,
     antialias: false, // post-processing chain makes MSAA redundant
     alpha: false,
     powerPreference: 'high-performance',
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setPixelRatio(LITE ? 0.5 : Math.min(window.devicePixelRatio, 1.5));
   renderer.setSize(window.innerWidth, window.innerHeight, false);
 
   scene = new THREE.Scene();
@@ -662,6 +634,10 @@ export function initOrb(canvas) {
     0.55, 0.6, 0.72
   );
   composer.addPass(bloomPass);
+  if (LITE) {
+    bloomPass.enabled = false;
+    perfTier = 2; // already at the lowest tier
+  }
 
   window.addEventListener('resize', onResize);
 
@@ -729,13 +705,21 @@ const tmpColor3 = new THREE.Color();
 const tmpColor4 = new THREE.Color();
 
 function render() {
-  const dt = clock.getDelta();
+  let dt = clock.getDelta();
   // A case study covers the whole screen: don't burn the GPU behind it
   if (document.documentElement.classList.contains('overlay-settled')) return;
+  if (LITE) {
+    liteAcc += dt;
+    if (liteAcc < LITE_STEP) return;
+    dt = liteAcc;
+    liteAcc = 0;
+  }
+  dt = Math.min(dt, 0.1);
   const t = clock.elapsedTime;
   perfCheck(dt);
   const s = orbState;
-  const k = s.ease;
+  // same feel at any frame rate: `ease` is the per-frame step at 60 fps
+  const k = 1 - Math.pow(1 - s.ease, dt * 60);
   for (const key of Object.keys(s.target)) {
     s.current[key] += (s.target[key] - s.current[key]) * k;
   }

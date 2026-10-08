@@ -15,12 +15,15 @@ const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matc
 // ----------------------------------------------------------------
 export let lenis = null;
 
+// Created at ENTER (scroll is locked before that); starts stopped if the
+// page is still locked.
 export function initSmoothScroll() {
-  if (reduceMotion) return null;
+  if (reduceMotion || lenis) return lenis;
   lenis = new Lenis({ lerp: 0.085, wheelMultiplier: 0.9 });
   lenis.on('scroll', ScrollTrigger.update);
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
+  if (document.documentElement.classList.contains('scroll-locked')) lenis.stop();
   return lenis;
 }
 
@@ -132,14 +135,6 @@ export function initChrome() {
   tick();
   setInterval(tick, 1000);
 
-  // Scroll progress bar
-  const bar = document.getElementById('scroll-progress');
-  ScrollTrigger.create({
-    start: 0,
-    end: 'max',
-    onUpdate(self) { bar.style.transform = `scaleX(${self.progress.toFixed(4)})`; },
-  });
-
   // Copy email
   const copy = document.getElementById('copy-email');
   if (copy) {
@@ -173,11 +168,21 @@ export function setHeaderSection(index, label) {
 // ----------------------------------------------------------------
 // Custom cursor: dot + lagging ring, label on interactive elements
 // ----------------------------------------------------------------
+// Scroll progress bar (set up with the rest of the scroll engine)
+export function initProgressBar() {
+  const bar = document.getElementById('scroll-progress');
+  ScrollTrigger.create({
+    start: 0,
+    end: 'max',
+    onUpdate(self) { bar.style.transform = `scaleX(${self.progress.toFixed(4)})`; },
+  });
+}
+
 export function initCursor() {
   if (!finePointer) return;
   const cursor = document.getElementById('cursor');
   const label = document.getElementById('cursor-label');
-  document.body.classList.add('has-cursor');
+  document.body.classList.add('has-cursor'); // already set by index.html; kept as a fallback
   const pos = { x: innerWidth / 2, y: innerHeight / 2 };
   const ring = { x: pos.x, y: pos.y };
   const dot = cursor.querySelector('.cursor__dot');

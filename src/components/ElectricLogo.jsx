@@ -5,14 +5,18 @@ import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl';
 
 import './ElectricLogo.css';
 
+// Local change vs React Bits: the shader's loop limits are cut to what the
+// orb logo uses (ARCS 5 -> 2, PULSES 3 -> 1, strands 6 -> 3). Each loop is
+// unrolled at compile time, so this makes the first frame much cheaper.
+
 const BOLT = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64"><path d="M39 3 12 37h17l-4 24 27-34H35z" fill="#fff"/></svg>'
 )}`;
 const RASTER = 560;
 const CELL = 4;
 const FAR = 1e20;
-const ARCS = 5;
-const PULSES = 3;
+const ARCS = 2;
+const PULSES = 1;
 const PIXEL_BUDGET = 4e6;
 
 const hexToRgb = hex => {
@@ -529,9 +533,9 @@ void main() {
   if (edge < reach && grow > 0.0) {
     float fade = smoothstep(reach, reach * 0.55, edge);
     vec2 q = pr / uUnit;
-    float count = min(uStrands + heat * 2.5, 6.0);
-    float limit = min(uStrands + heatCap * 2.5, 6.0);
-    for (int i = 0; i < 6; i++) {
+    float count = min(uStrands + heat * 2.5, 3.0);
+    float limit = min(uStrands + heatCap * 2.5, 3.0);
+    for (int i = 0; i < 3; i++) {
       float fi = float(i);
       if (fi >= limit) break;
       float present = clamp(count - fi, 0.0, 1.0);
@@ -936,7 +940,7 @@ const ElectricLogo = ({
         uniforms.uIntensity.value = s.intensity;
         uniforms.uGlow.value = s.glow;
         uniforms.uThickness.value = s.thickness;
-        uniforms.uStrands.value = Math.max(1, Math.min(6, Math.round(s.strands)));
+        uniforms.uStrands.value = Math.max(1, Math.min(3, Math.round(s.strands)));
         uniforms.uBend.value = s.bend;
         uniforms.uCrackle.value = s.crackle;
         uniforms.uFlicker.value = reducedMotion ? 0 : s.flicker;

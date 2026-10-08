@@ -2,7 +2,7 @@
 // The scroll engine publishes state (current project, journey year) through
 // ../bus.js; islands read it with useSyncExternalStore.
 import { createRoot } from 'react-dom/client';
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
@@ -16,17 +16,18 @@ import {
 } from 'react-icons/lu';
 
 import GooeyNav from '@/components/GooeyNav';
-import RotatingText from '@/components/RotatingText';
-import ElectricBorder from '@/components/ElectricBorder';
-import TiltedCard from '@/components/TiltedCard';
-import SplitFlapText from '@/components/SplitFlapText';
-import ScrollVelocity from '@/components/ScrollVelocity';
-import { LogoLoop } from '@/components/LogoLoop';
-import TextPressure from '@/components/TextPressure';
-import CardSwap, { Card } from '@/components/CardSwap';
-import GlareHover from '@/components/GlareHover';
-import ElectricLogo from '@/components/ElectricLogo';
-import ProfileCard from '@/components/ProfileCard';
+
+// Everything heavier loads as its own chunk the first time it renders
+const RotatingText = lazy(() => import('@/components/RotatingText'));
+const ElectricBorder = lazy(() => import('@/components/ElectricBorder'));
+const TiltedCard = lazy(() => import('@/components/TiltedCard'));
+const SplitFlapText = lazy(() => import('@/components/SplitFlapText'));
+const ScrollVelocity = lazy(() => import('@/components/ScrollVelocity'));
+const LogoLoop = lazy(() => import('@/components/LogoLoop').then((m) => ({ default: m.LogoLoop })));
+const TextPressure = lazy(() => import('@/components/TextPressure'));
+const GlareHover = lazy(() => import('@/components/GlareHover'));
+const ElectricLogo = lazy(() => import('@/components/ElectricLogo'));
+const ProfileCard = lazy(() => import('@/components/ProfileCard'));
 
 import { site, nav, projects, toolkit, certifications } from '../data.js';
 import { subscribe, getState, setState } from '../bus.js';
@@ -101,6 +102,7 @@ function BrandIcon({ name, tone = 'brand', className = '' }) {
 // underneath; the overlay is 1.8x the logo so arcs have room to jump.
 // ---------------------------------------------------------------
 function LogoElectric() {
+  if (document.documentElement.classList.contains('gpu-lite')) return null;
   return (
     <ElectricLogo
       src="/brand/logo-electric.svg"
@@ -202,18 +204,20 @@ function HeaderNav() {
 // ---------------------------------------------------------------
 function HeroRoles() {
   return (
-    <RotatingText
-      texts={site.roles}
-      mainClassName="heroRotate"
-      splitLevelClassName="heroRotate__split"
-      staggerFrom="last"
-      initial={{ y: '100%' }}
-      animate={{ y: 0 }}
-      exit={{ y: '-120%' }}
-      staggerDuration={0.025}
-      transition={{ type: 'spring', damping: 30, stiffness: 400 }}
-      rotationInterval={2600}
-    />
+    <Suspense fallback={<span>{site.roles[0]}</span>}>
+      <RotatingText
+        texts={site.roles}
+        mainClassName="heroRotate"
+        splitLevelClassName="heroRotate__split"
+        staggerFrom="last"
+        initial={{ y: '100%' }}
+        animate={{ y: 0 }}
+        exit={{ y: '-120%' }}
+        staggerDuration={0.025}
+        transition={{ type: 'spring', damping: 30, stiffness: 400 }}
+        rotationInterval={2600}
+      />
+    </Suspense>
   );
 }
 
@@ -434,7 +438,7 @@ function useNarrow(query = '(max-width: 900px)') {
   return narrow;
 }
 
-function CertStack() {
+const makeCertStack = (CardSwap, Card) => function CertStack() {
   const narrow = useNarrow();
   const featured = certifications.items
     .map((c, i) => ({ c, i }))
@@ -460,7 +464,10 @@ function CertStack() {
       ))}
     </CardSwap>
   );
-}
+};
+const CertStack = lazy(() =>
+  import('@/components/CardSwap').then(({ default: CardSwap, Card }) => ({ default: makeCertStack(CardSwap, Card) })),
+);
 
 function CertGallery() {
   const items = certifications.items;
@@ -639,46 +646,71 @@ function ContactTitle() {
 }
 
 // ---------------------------------------------------------------
-export function mountIslands() {
-  const mount = (id, element) => {
-    const node = document.getElementById(id);
-    if (!node) return;
-    node.textContent = '';
-    createRoot(node).render(element);
-  };
+const mount = (id, element) => {
+  const node = document.getElementById(id);
+  if (!node) return;
+  node.textContent = '';
+  createRoot(node).render(<Suspense fallback={null}>{element}</Suspense>);
+};
 
+// Header and hero: on screen from the start
+export function mountAboveFold() {
   mount('header-nav', <HeaderNav />);
-  mount('header-electric', <LogoElectric />);
-  mount('preloader-electric', <LogoElectric />);
-  mount('about-card', <AboutCard />);
-  mount('about-card-m', <AboutCard />);
-
   mount('hero-ticker-word', <HeroRoles />);
-  mount('project-electric', <ProjectElectric />);
-  mount('project-shot', <ProjectShot />);
-  mount('journey-year', <JourneyYear />);
+}
+
+// The electric logo compiles a heavy shader, so each one starts only when
+// it's about to be seen (see main.js)
+const electricMounted = new Set();
+export function mountElectric(id) {
+  if (electricMounted.has(id)) return;
+  electricMounted.add(id);
+  mount(id, <LogoElectric />);
+}
+
+// The rest is built after ENTER, one island per idle slot, while the intro
+// plays, so it's all in place before anyone can scroll to it
+let belowStarted = false;
+export function mountBelowFold() {
+  if (belowStarted) return;
+  belowStarted = true;
   const defs = document.createElement('div');
   defs.id = 'brand-defs';
   document.body.appendChild(defs);
-  mount('brand-defs', <BrandGradients />);
-
-  mount('pillars', <ToolkitPillars />);
-  mount('tabs-list', <FiveTabs />);
-  mount('velocity-a', <Band words={toolkit.marqueeA} velocity={45} />);
-  mount('velocity-b', <Band words={toolkit.marqueeB} velocity={-45} tone="ink" />);
-  mount('logo-loop', <ToolLogos />);
-  mount('cert-stack', <CertStack />);
-  mount('cert-gallery', <CertGallery />);
-
   const viewer = document.createElement('div');
   viewer.id = 'cert-viewer';
   document.body.appendChild(viewer);
-  mount('cert-viewer', <CertLightbox />);
-  mount('contact-title', <ContactTitle />);
 
-  // Warm the cache so project screenshots swap without a flash
-  projects.forEach((p) => {
-    const img = new Image();
-    img.src = p.image;
-  });
+  const queue = [
+    ['about-card', <AboutCard />],
+    ['about-card-m', <AboutCard />],
+    ['journey-year', <JourneyYear />],
+    ['project-electric', <ProjectElectric />],
+    ['project-shot', <ProjectShot />],
+    ['brand-defs', <BrandGradients />],
+    ['pillars', <ToolkitPillars />],
+    ['velocity-a', <Band words={toolkit.marqueeA} velocity={45} />],
+    ['velocity-b', <Band words={toolkit.marqueeB} velocity={-45} tone="ink" />],
+    ['tabs-list', <FiveTabs />],
+    ['logo-loop', <ToolLogos />],
+    ['cert-stack', <CertStack />],
+    ['cert-gallery', <CertGallery />],
+    ['cert-viewer', <CertLightbox />],
+    ['contact-title', <ContactTitle />],
+  ];
+  const idle = (fn) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 400 }) : setTimeout(fn, 16));
+  const next = () => {
+    const item = queue.shift();
+    if (!item) {
+      // warm the cache so project screenshots swap without a flash
+      projects.forEach((p) => {
+        const img = new Image();
+        img.src = p.image;
+      });
+      return;
+    }
+    mount(...item);
+    idle(next);
+  };
+  idle(next);
 }

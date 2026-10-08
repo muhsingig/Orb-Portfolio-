@@ -139,6 +139,13 @@ function buildJourney() {
     const tags = e.tags.length
       ? `<div class="journeyEntry__tags">${e.tags.map((t) => `<span>${t}</span>`).join('')}</div>`
       : '';
+    const { logo } = e;
+    const name = e.org.split(' · ')[0];
+    const logoTile = logo.initials
+      ? `<span class="journeyEntry__logo is-initials" style="--logo-glow: ${logo.glow}" aria-hidden="true">${logo.initials}</span>`
+      : `<span class="journeyEntry__logo${logo.fit ? ` is-${logo.fit}` : ''}" style="--logo-bg: ${logo.bg}; --logo-glow: ${logo.glow}">
+          <img src="${logo.src}" alt="${name} logo" loading="lazy" decoding="async">
+        </span>`;
     li.innerHTML = `
       <span class="journeyEntry__dot" aria-hidden="true"></span>
       <div class="journeyEntry__card spotlight">
@@ -146,8 +153,13 @@ function buildJourney() {
           <span class="journeyEntry__kind">${e.kind}</span>
           <span class="journeyEntry__period">${e.period}</span>
         </div>
-        <h3 class="journeyEntry__role">${e.role}</h3>
-        <p class="journeyEntry__org">${e.org}<span> &mdash; ${e.place}</span></p>
+        <div class="journeyEntry__head">
+          ${logoTile}
+          <div class="journeyEntry__heading">
+            <h3 class="journeyEntry__role">${e.role}</h3>
+            <p class="journeyEntry__org">${e.org}<span> &mdash; ${e.place}</span></p>
+          </div>
+        </div>
         <p class="journeyEntry__lead">${e.lead}</p>
         ${points}
         ${tags}

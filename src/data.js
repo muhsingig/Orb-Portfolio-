@@ -290,6 +290,7 @@ export const journey = {
       role: 'Solutions Strategist Intern',
       org: 'Django · Digital Agency',
       place: 'Mumbai',
+      logo: { src: '/journey/django.png', bg: '#0b0b0b', glow: '#ff6a2b', fit: 'wide' },
       lead: 'On the Solutions team running Pluro, a fertility care platform scaling to 100+ clinics, in a category where tone and accuracy matter more than reach.',
       points: [
         'Ran day-to-day social across 6 accounts on Instagram, LinkedIn, Facebook and YouTube: calendars, creative direction, copy and scheduling.',
@@ -305,6 +306,7 @@ export const journey = {
       role: 'Head of Department, Executions',
       org: 'Talaash · A Jai Hind BMS Initiative',
       place: 'Mumbai',
+      logo: { src: '/journey/talaash.png', bg: '#ffffff', glow: '#1f9be8', fit: 'bleed' },
       lead: "Jai Hind College's flagship BMS festival, drawing 1,000+ students from colleges across Mumbai.",
       points: [
         'Led a 25-member execution team across 3 pre-events and the main day.',
@@ -320,6 +322,7 @@ export const journey = {
       role: 'Head of Department, Marketing',
       org: 'Jai Hind College Digital Nexus',
       place: 'Mumbai',
+      logo: { src: '/journey/digital-nexus.png', bg: '#000000', glow: '#ff3d8b', fit: 'wide' },
       lead: "The college's student-run digital and technology initiative.",
       points: [
         'Closed 8 corporate sponsors, including Rio and Mexibay, from 100+ companies pitched, lead to signature.',
@@ -335,6 +338,7 @@ export const journey = {
       role: 'Social Media Manager',
       org: 'Toy Kingdom Online',
       place: 'E-commerce',
+      logo: { initials: 'TK', glow: '#f4b740' },
       lead: 'Content and promotions for an e-commerce brand.',
       points: [
         'Created engaging content and promotional designs for social platforms.',
@@ -349,6 +353,7 @@ export const journey = {
       role: 'Sales Manager',
       org: 'Amigo Cars',
       place: 'Mumbai',
+      logo: { initials: 'AC', glow: '#7cb1ff' },
       lead: 'Where it started: customer relations and end-to-end sales.',
       points: [
         'Handled the full sales process, first conversation to close.',
@@ -363,6 +368,7 @@ export const journey = {
       role: "Bachelor's in Digital Strategy",
       org: 'Jai Hind College',
       place: 'Mumbai',
+      logo: { src: '/journey/jai-hind-college.png', bg: '#ffffff', glow: '#3d5bd9' },
       lead: 'Where marketing, technology and creativity meet: campaigns, brand building, media planning and AI strategy.',
       points: [],
       tags: ['Media planning', 'AI strategy', 'Brand'],
@@ -374,6 +380,7 @@ export const journey = {
       role: 'Schooling',
       org: "St. Xavier's Boys' Academy",
       place: 'Mumbai',
+      logo: { src: '/journey/sxba.png', bg: '#ffffff', glow: '#e23b3b' },
       lead: 'Early interests in communication, leadership and creative thinking.',
       points: [],
       tags: [],

@@ -263,7 +263,7 @@ function ProjectShot() {
         displayOverlayContent
         overlayContent={
           <span className="projectShot__chip">
-            {pad2(project + 1)} · {p.url ? 'Live site' : p.deck ? 'Deck' : 'Case study'}
+            {pad2(project + 1)} · {p.client ? 'Client site' : p.url ? 'Live site' : p.deck ? 'Deck' : 'Case study'}
           </span>
         }
       />

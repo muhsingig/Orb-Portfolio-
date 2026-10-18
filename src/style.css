@@ -1675,6 +1675,14 @@ body.has-cursor button { cursor: none; }
   line-height: 1.6;
   color: #bdbdbd;
 }
+.journeyEntry__points a {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: var(--pink-hot);
+  text-underline-offset: 0.2em;
+  transition: color 0.2s;
+}
+.journeyEntry__points a:hover { color: var(--pink-hot); }
 .journeyEntry__points li::before {
   content: '\2192';
   position: absolute;

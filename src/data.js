@@ -65,6 +65,30 @@ export const manifestLines = [
 // screen, `accent` drives the UI highlights for that project.
 export const projects = [
   {
+    // freelance client work leads the carousel
+    slug: 'sanika-joshi',
+    client: true,
+    image: '/work/sanika-joshi.webp',
+    name: 'Sanika Joshi',
+    category: 'Freelance · Portfolio website',
+    year: '2026',
+    timeframe: 'Design to launch',
+    baseline: 'A portfolio for a content, social media and brand strategist, designed and shipped end to end.',
+    concept:
+      "One scrolling site that puts a strategist's whole body of work in one place: case studies first, then her writing, the events she ran, the brands she's worked with and what people say about her, ending in a way to hire her.",
+    highlights: [
+      'Five case studies up front: Django, Amaha, Humans of Bombay, Myntmore and Kahani Tree.',
+      'Her LinkedIn pieces, event reels, Substack posts and a travel gallery by country, all in the same scroll.',
+      'Services, client logos, testimonials and a contact form that asks for the project, so a visit can end in an enquiry.',
+    ],
+    stack: 'Vite · Vercel',
+    role: 'Design & build, freelance',
+    url: 'https://sanika-joshi.vercel.app/',
+    result: { value: '5', label: 'case studies, plus writing, events, testimonials and a contact form' },
+    accent: '#f0892a',
+    dive: '#1f130b',
+  },
+  {
     slug: 'nacar',
     image: '/work/nacar.webp',
     name: 'Nácar',
@@ -308,6 +332,20 @@ export const journey = {
   title: 'The Journey',
   intro: 'From e-commerce content to agency dashboards to deployed sites. Every role taught me one more step between idea and launch.',
   entries: [
+    {
+      kind: 'Work',
+      period: '2026 – Present',
+      year: '2026',
+      role: 'Freelance Web Designer & Developer',
+      org: 'Freelance · Self-employed',
+      place: 'Mumbai',
+      lead: 'I design and ship websites for clients, start to finish: structure, design, build and launch.',
+      points: [
+        'Designed and built <a href="https://sanika-joshi.vercel.app/" target="_blank" rel="noreferrer">sanika-joshi.vercel.app &#8599;</a>, a portfolio for a content, social media and brand strategist: case studies, writing, events, testimonials and a contact form.',
+      ],
+      tags: ['Web design', 'Web development', 'Client work'],
+      logo: { src: '/brand/logo-mark.svg', bg: '#0d0812', glow: '#f74fa7' },
+    },
     {
       kind: 'Work',
       period: 'May 2026 – Sep 2026',

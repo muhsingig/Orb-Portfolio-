@@ -347,7 +347,9 @@ export function initScroll() {
     baseEl.textContent = proj.baseline;
     document.getElementById('project-result-value').textContent = proj.result?.value ?? '';
     document.getElementById('project-result-label').textContent = proj.result?.label ?? '';
-    document.getElementById('project-case').hidden = !proj.caseStudy;
+    const badge = document.getElementById('project-case');
+    badge.textContent = proj.client ? 'Client work' : 'Case study';
+    badge.hidden = !(proj.client || proj.caseStudy);
     viewEl.dataset.index = String(i);
     const link = proj.url || proj.deck;
     liveEl.hidden = !link;

@@ -1,5 +1,5 @@
 import {
-  site, nav, manifestLines, projects, journey, toolkit, certifications, about, contact,
+  site, nav, manifestLines, projects, freelance, journey, toolkit, certifications, about, contact,
 } from './data.js';
 import { logoSVG } from './logo.js';
 
@@ -48,6 +48,7 @@ export function buildSections() {
   buildAbout();
   buildProjects();
   buildJourney();
+  buildFreelance();
   buildToolkit();
   buildCertificates();
   buildContact();
@@ -167,6 +168,40 @@ function buildJourney() {
         ${tags}
       </div>`;
     list.appendChild(li);
+  });
+}
+
+// Freelance: the client site leads as a wide card, showpieces follow.
+// "Case study" opens the same overlay as Work (src/projectDetail.js).
+function buildFreelance() {
+  splitWords(document.getElementById('freelance-title'), freelance.title);
+  document.getElementById('freelance-intro').textContent = freelance.intro;
+  const grid = document.getElementById('freelance-grid');
+  freelance.items.forEach((p, i) => {
+    const host = p.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+    const kind = p.kind === 'client' ? 'Client work' : 'Showpiece';
+    const li = el('li', `freelanceCard freelanceCard--${p.kind} spotlight`);
+    li.style.setProperty('--accent', p.accent);
+    li.innerHTML = `
+      <a class="freelanceCard__shot" href="${p.url}" target="_blank" rel="noreferrer" data-cursor="Visit" aria-label="Visit ${p.name} (opens the live site)">
+        <span class="freelanceCard__bar" aria-hidden="true"><i></i><i></i><i></i><span>${host}</span></span>
+        <span class="freelanceCard__frame"><img src="${p.image}" alt="" loading="lazy" decoding="async"></span>
+      </a>
+      <div class="freelanceCard__body">
+        <div class="freelanceCard__meta">
+          <span class="freelanceCard__kind">${kind}</span>
+          <span class="freelanceCard__num">${pad2(i + 1)}</span>
+        </div>
+        <h3 class="freelanceCard__name">${p.name}</h3>
+        <p class="freelanceCard__cat">${p.category.split(' · ').pop()}</p>
+        <p class="freelanceCard__line">${p.baseline}</p>
+        <p class="freelanceCard__stack">${p.stack}</p>
+        <div class="freelanceCard__actions">
+          <button class="freelanceCard__case" type="button" data-freelance="${i}" data-cursor="Open">Case study <span aria-hidden="true">&#8594;</span></button>
+          <a class="freelanceCard__live" href="${p.url}" target="_blank" rel="noreferrer" data-cursor="Visit">Live site <span aria-hidden="true">&#8599;</span></a>
+        </div>
+      </div>`;
+    grid.appendChild(li);
   });
 }
 

@@ -212,6 +212,22 @@ export function initScroll() {
   function toolkitOrb(p = 1) {
     return { x: isNarrow() ? -0.7 : -0.98, y: lerp(0.3, -0.3, p) };
   }
+  // FREELANCE — the orb waits at the left edge, where Work leaves it and
+  // Toolkit picks it up
+  zone('#freelance', 'top bottom', 'bottom top', () => {
+    const t = toolkitOrb(0);
+    setOrb({
+      x: t.x,
+      y: t.y,
+      scale: 1.15,
+      theme: 0.4,
+      dim: 0.25,
+      filamentSpeed: 0.4,
+      halo: 0.5,
+      fogAlpha: 0.35,
+    });
+  });
+
   zone('#toolkit', 'top bottom', 'bottom top', (p) => {
     const t = toolkitOrb(p);
     setOrb({

@@ -8,7 +8,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import {
   SiClaude, SiClaudecode, SiCursor, SiNextdotjs, SiReact, SiFirebase, SiSupabase, SiVercel, SiGithub,
   SiMake, SiZapier, SiWordpress, SiGooglegemini, SiGoogleads, SiSemrush, SiThreedotjs, SiGsap,
-  SiModelcontextprotocol, SiAnthropic,
+  SiModelcontextprotocol, SiAnthropic, SiHubspot,
 } from 'react-icons/si';
 import {
   LuSparkles, LuBanana, LuMegaphone, LuNotebookPen, LuSearchCheck, LuChartColumn, LuTelescope,
@@ -38,7 +38,7 @@ gsap.registerPlugin(ScrollTrigger);
 const ICONS = {
   SiClaude, SiClaudecode, SiCursor, SiNextdotjs, SiReact, SiFirebase, SiSupabase, SiVercel, SiGithub,
   SiMake, SiZapier, SiWordpress, SiGooglegemini, SiGoogleads, SiSemrush, SiThreedotjs, SiGsap,
-  SiModelcontextprotocol, SiAnthropic,
+  SiModelcontextprotocol, SiAnthropic, SiHubspot,
   LuSparkles, LuBanana, LuMegaphone, LuNotebookPen, LuSearchCheck, LuChartColumn, LuTelescope,
   LuHandshake, LuHandCoins,
 };

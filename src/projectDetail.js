@@ -1,4 +1,4 @@
-import { projects } from './data.js';
+import { projects, freelance } from './data.js';
 import { lockScroll } from './ui.js';
 
 const pad2 = (n) => String(n + 1).padStart(2, '0');
@@ -34,12 +34,15 @@ export function initProjectDetail() {
   const previewFrame = document.getElementById('detail-preview-frame');
 
   let openIndex = 0;
+  let list = projects; // the overlay pages through Work or Freelance
   let state = 'closed';
+  const previewHint = document.getElementById('detail-preview-hint');
+  const previewHintDefault = previewHint.textContent;
   let returnFocus = null;
 
   function fill(i) {
-    const p = projects[i];
-    const n = projects.length;
+    const p = list[i];
+    const n = list.length;
     detail.style.setProperty('--accent', p.accent);
     detail.style.setProperty('--dive', p.dive);
     navNum.textContent = `${pad2(i)} — `;
@@ -48,6 +51,7 @@ export function initProjectDetail() {
     catEl.textContent = p.category;
     nameEl.textContent = p.name;
     baselineEl.textContent = p.baseline;
+    document.getElementById('detail-result').hidden = !p.result;
     document.getElementById('detail-result-value').textContent = p.result?.value ?? '';
     document.getElementById('detail-result-label').textContent = p.result?.label ?? '';
     conceptEl.textContent = p.concept;
@@ -63,7 +67,8 @@ export function initProjectDetail() {
       .join('');
     stackEl.textContent = p.stack;
     roleEl.textContent = p.role;
-    timeEl.textContent = p.timeframe;
+    timeEl.textContent = p.timeframe ?? '';
+    timeEl.closest('.stackRoleSection__item').hidden = !p.timeframe;
     yearEl.textContent = p.year;
     const link = p.url || p.deck;
     liveEl.hidden = !link;
@@ -76,11 +81,12 @@ export function initProjectDetail() {
       previewUrl.textContent = p.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
       previewOpen.href = p.url;
       previewFrame.src = p.url;
+      previewHint.textContent = p.note ? `${previewHintDefault} ${p.note}` : previewHintDefault;
     } else {
       previewFrame.src = 'about:blank';
     }
-    prevName.textContent = projects[(i - 1 + n) % n].name;
-    nextName.textContent = projects[(i + 1) % n].name;
+    prevName.textContent = list[(i - 1 + n) % n].name;
+    nextName.textContent = list[(i + 1) % n].name;
     // Procedural backdrop in the project's own colours
     heroBg.style.background = `
       linear-gradient(90deg, #070707f2 0%, #070707b3 38%, #07070733 75%),
@@ -90,9 +96,10 @@ export function initProjectDetail() {
       ${p.dive}`;
   }
 
-  function open(i, originX, originY) {
+  function open(i, originX, originY, from = projects) {
     if (state !== 'closed') return;
     state = 'entering';
+    list = from;
     openIndex = i;
     returnFocus = document.activeElement;
     fill(i);
@@ -101,7 +108,7 @@ export function initProjectDetail() {
 
     flash.style.setProperty('--ox', `${originX}px`);
     flash.style.setProperty('--oy', `${originY}px`);
-    flash.style.setProperty('--flash', projects[i].accent);
+    flash.style.setProperty('--flash', list[i].accent);
     flash.classList.remove('plasmaFlash--entering');
     void flash.offsetWidth;
     flash.classList.add('plasmaFlash--entering');
@@ -136,7 +143,7 @@ export function initProjectDetail() {
   }
 
   function swap(delta) {
-    openIndex = (openIndex + delta + projects.length) % projects.length;
+    openIndex = (openIndex + delta + list.length) % list.length;
     scrollBox.classList.add('projectDetail__scroll--fading');
     setTimeout(() => {
       fill(openIndex);
@@ -150,6 +157,15 @@ export function initProjectDetail() {
     const i = Number(viewLink.dataset.index || 0);
     const r = viewLink.getBoundingClientRect();
     open(i, r.left + r.width / 2, r.top);
+  });
+
+  // Freelance cards: "Case study" opens the same overlay on that list
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-freelance]');
+    if (!btn) return;
+    e.preventDefault();
+    const r = btn.getBoundingClientRect();
+    open(Number(btn.dataset.freelance), r.left + r.width / 2, r.top + r.height / 2, freelance.items);
   });
 
   closeBtn.addEventListener('click', close);

@@ -25,9 +25,10 @@ export const nav = [
   { label: 'About', target: '#about', index: '02' },
   { label: 'Journey', target: '#journey', index: '03' },
   { label: 'Work', target: '#projects', index: '04' },
-  { label: 'Toolkit', target: '#toolkit', index: '05' },
-  { label: 'Certificates', target: '#certificates', index: '06' },
-  { label: 'Contact', target: '#contact', index: '07' },
+  { label: 'Freelance', target: '#freelance', index: '05' },
+  { label: 'Toolkit', target: '#toolkit', index: '06' },
+  { label: 'Certificates', target: '#certificates', index: '07' },
+  { label: 'Contact', target: '#contact', index: '08' },
 ];
 
 // Each manifest line owns a slice of the manifest scroll range [start..end]
@@ -64,30 +65,6 @@ export const manifestLines = [
 // orb while the project is on
 // screen, `accent` drives the UI highlights for that project.
 export const projects = [
-  {
-    // freelance client work leads the carousel
-    slug: 'sanika-joshi',
-    client: true,
-    image: '/work/sanika-joshi.webp',
-    name: 'Sanika Joshi',
-    category: 'Freelance · Portfolio website',
-    year: '2026',
-    timeframe: 'Design to launch',
-    baseline: 'A portfolio for a content, social media and brand strategist, designed and shipped end to end.',
-    concept:
-      "One scrolling site that puts a strategist's whole body of work in one place: case studies first, then her writing, the events she ran, the brands she's worked with and what people say about her, ending in a way to hire her.",
-    highlights: [
-      'Five case studies up front: Django, Amaha, Humans of Bombay, Myntmore and Kahani Tree.',
-      'Her LinkedIn pieces, event reels, Substack posts and a travel gallery by country, all in the same scroll.',
-      'Services, client logos, testimonials and a contact form that asks for the project, so a visit can end in an enquiry.',
-    ],
-    stack: 'Vite · Vercel',
-    role: 'Design & build, freelance',
-    url: 'https://sanika-joshi.vercel.app/',
-    result: { value: '5', label: 'case studies, plus writing, events, testimonials and a contact form' },
-    accent: '#f0892a',
-    dive: '#1f130b',
-  },
   {
     slug: 'nacar',
     image: '/work/nacar.webp',
@@ -328,10 +305,139 @@ export const projects = [
   },
 ];
 
+// Freelance: sites I design and build. `kind` is 'client' for client work
+// and 'showpiece' for sites I built to show what a site can do. Every line
+// below describes what is actually on the live site.
+export const freelance = {
+  title: 'Sites I ship.',
+  intro: 'Websites I design and build, start to finish: the client site first, then showpieces made to show what a site can do. All of them are live.',
+  items: [
+    {
+      slug: 'sanika-joshi',
+      kind: 'client',
+      image: '/work/sanika-joshi.webp',
+      name: 'Sanika Joshi',
+      category: 'Client work · Portfolio website',
+      year: '2026',
+      baseline: 'A portfolio for a content, social media and brand strategist, designed and shipped end to end.',
+      concept:
+        "One scrolling site that puts a strategist's whole body of work in one place: case studies first, then her writing, the events she ran, the brands she's worked with and what people say about her, ending in a way to hire her.",
+      highlights: [
+        'Five case studies up front: Django, Amaha, Humans of Bombay, Myntmore and Kahani Tree.',
+        'Her LinkedIn pieces, event reels, Substack posts and a travel gallery by country, all in the same scroll.',
+        'Services, client logos, testimonials and a contact form that asks for the project, so a visit can end in an enquiry.',
+      ],
+      stack: 'Vite · Vercel',
+      role: 'Design & build, freelance',
+      url: 'https://sanika-joshi.vercel.app/',
+      result: { value: '5', label: 'case studies, plus writing, events, testimonials and a contact form' },
+      accent: '#f0892a',
+      dive: '#1f130b',
+    },
+    {
+      slug: 'moonshot',
+      kind: 'showpiece',
+      image: '/work/moonshot.webp',
+      name: 'Moonshot',
+      category: 'Showpiece · D2C brand site',
+      year: '2026',
+      baseline: 'A launch site for a plant-powered sparkling energy drink from Pune. Four flavours, one night sky.',
+      concept:
+        'A drink made for late nights, so the whole site happens at night: the can turns in front of the moon, each flavour is told by the colour at the base of the can, and the shop sells it by the dozen.',
+      highlights: [
+        'The can in front of the moon, with four flavours to switch between: Alphonso Mango, Jamun & Black Salt, Guava & Chilli and Nimbu Mint.',
+        'The numbers before the pitch: 80 mg plant caffeine, 5 g sugar, real fruit, and the sound of the can opening.',
+        'A shop with a cart and a Discovery Box, a three-step ritual, and an email sign-up for new flavours.',
+      ],
+      stack: 'Three.js · GSAP · Lenis · Vercel',
+      role: 'Concept, design & build',
+      url: 'https://moonshot-energy.vercel.app/',
+      accent: '#8fb0ff',
+      dive: '#081233',
+    },
+    {
+      slug: 'aurele',
+      kind: 'showpiece',
+      image: '/work/aurele.webp',
+      name: 'Aurèle',
+      category: 'Showpiece · Luxury product site',
+      year: '2026',
+      baseline: 'A fictional Geneva watch maison and its one watch, the Méridien, drawn live in 3D.',
+      concept:
+        'A luxury watch sells on craft, so the site shows the craft: the Méridien comes apart in the order a watchmaker lifts it, its wheels turn at their true speed, and the hands on the page are set to your own time.',
+      highlights: [
+        'The watch comes apart part by part, in the order a watchmaker lifts it: crystal, bezel, hands, dial, then the calibre.',
+        'The day and night ring, the 72-hour reserve, the going train and the escapement each get a scene, at their real speed.',
+        'Three references with prices, full specifications and a section to book an appointment in Genève.',
+      ],
+      stack: 'Three.js · Lenis · Vercel',
+      role: 'Concept, design & build',
+      url: 'https://aurele-theta.vercel.app/',
+      accent: '#d6b25e',
+      dive: '#0e0c08',
+    },
+    {
+      slug: 'stay-purr',
+      kind: 'showpiece',
+      image: '/work/stay-purr.webp',
+      name: 'Stay Purr',
+      category: 'Showpiece · Service business site',
+      year: '2026',
+      baseline: 'A site for an in-home cat-sitting service that you play your way into: toss the yarn to get in.',
+      concept:
+        'Cat people trust cat people, so the site acts like one: you toss a ball of yarn to get in, a cat holds the string on the home page, and the booking steps end in a "welcome meow".',
+      highlights: [
+        'An intro game: toss the ball of yarn to reach the site.',
+        'Services from drop-in visits to overnight care, and a four-step booking flow from sign-up to the first "welcome meow".',
+        'Testimonials, pricing, a blog and booking buttons throughout.',
+      ],
+      stack: 'GSAP · Lenis · Vercel',
+      role: 'Concept, design & build',
+      url: 'https://stay-purr.vercel.app/',
+      accent: '#7d86ff',
+      dive: '#121747',
+    },
+    {
+      slug: 'real-or-ai',
+      kind: 'showpiece',
+      image: '/work/real-or-ai.webp',
+      name: 'Real or AI?',
+      category: 'Showpiece · Party game web app',
+      year: '2026',
+      baseline: 'A party game for your group chat: the AI learns how each friend texts, then hides fakes among their real messages.',
+      concept:
+        "Everyone in a group chat has a voice. The game turns that into a test: load the chat on a big screen, let the AI study how each friend writes, then see who can still tell their friends from the fakes.",
+      highlights: [
+        'Host on a laptop or TV and load a WhatsApp group chat; friends join on their phones with a room code.',
+        'The AI learns how each friend texts and mixes their real messages with fakes.',
+        'Then everyone tries to spot which is which: real, or AI?',
+      ],
+      stack: 'React · Vite · Render',
+      role: 'Concept, design & build',
+      url: 'https://real-or-ai-n4wc.onrender.com/',
+      note: 'It runs on a free server that sleeps between visits, so the first load can take up to a minute.',
+      accent: '#ff5a3c',
+      dive: '#1c0f0a',
+    },
+  ],
+};
+
 export const journey = {
   title: 'The Journey',
   intro: 'From e-commerce content to agency dashboards to deployed sites. Every role taught me one more step between idea and launch.',
   entries: [
+    {
+      kind: 'Work',
+      period: 'Nov 2026 – Present',
+      year: '2026',
+      role: 'Influencer Marketing Intern',
+      org: 'Schbang · Creative, Media & Technology Agency',
+      place: 'Mumbai',
+      lead: 'Just started in influencer marketing at Schbang, the Mumbai creative, media and technology agency.',
+      points: [],
+      tags: ['Influencer marketing', 'Agency'],
+      logo: { src: '/journey/schbang.png', bg: '#101014', glow: '#f04e37' },
+    },
     {
       kind: 'Work',
       period: '2026 – Present',
@@ -341,9 +447,11 @@ export const journey = {
       place: 'Mumbai',
       lead: 'I design and ship websites for clients, start to finish: structure, design, build and launch.',
       points: [
-        'Designed and built <a href="https://sanika-joshi.vercel.app/" target="_blank" rel="noreferrer">sanika-joshi.vercel.app &#8599;</a>, a portfolio for a content, social media and brand strategist: case studies, writing, events, testimonials and a contact form.',
+        'Client: designed and built <a href="https://sanika-joshi.vercel.app/" target="_blank" rel="noreferrer">sanika-joshi.vercel.app &#8599;</a>, a portfolio for a content, social media and brand strategist.',
+        'Showpieces: <a href="https://moonshot-energy.vercel.app/" target="_blank" rel="noreferrer">Moonshot</a>, a launch site for an energy drink; <a href="https://aurele-theta.vercel.app/" target="_blank" rel="noreferrer">Aurèle</a>, a 3D watch maison; <a href="https://stay-purr.vercel.app/" target="_blank" rel="noreferrer">Stay Purr</a>, cat sitting with a yarn-toss intro; and <a href="https://real-or-ai-n4wc.onrender.com/" target="_blank" rel="noreferrer">Real or AI?</a>, a group-chat party game.',
+        'All five are in the <a href="#freelance" data-nav="#freelance">Freelance section &#8595;</a>.',
       ],
-      tags: ['Web design', 'Web development', 'Client work'],
+      tags: ['Web design', 'Web development', 'Client work', 'Showpieces'],
       logo: { src: '/brand/logo-mark.svg', bg: '#0d0812', glow: '#f74fa7' },
     },
     {
@@ -480,6 +588,7 @@ export const toolkit = {
     Gemini: { icon: 'SiGooglegemini', gradient: ['#4796E3', '#9177C7', '#CA6673'] },
     'Google Ads': { icon: 'SiGoogleads', gradient: ['#FBBC04', '#4285F4'] },
     Semrush: { icon: 'SiSemrush', color: '#FF642D' },
+    HubSpot: { icon: 'SiHubspot', color: '#FF7A59' },
     'Three.js': { icon: 'SiThreedotjs', color: '#ffffff' },
     GSAP: { icon: 'SiGsap', color: '#0AE448' },
     Canva: { mono: 'C', gradient: ['#00C4CC', '#7D2AE8'] },
@@ -530,7 +639,7 @@ export const toolkit = {
 // and the original <slug>.pdf in public/.
 export const certifications = {
   title: 'Certified.',
-  intro: 'Twelve certificates, six of them from Anthropic. Every one is here, and every one opens.',
+  intro: 'Thirteen certificates, six of them from Anthropic. Every one is here, and every one opens.',
   items: [
     { slug: 'anthropic-ai-fluency-framework', name: 'AI Fluency: Framework & Foundations', issuer: 'Anthropic', date: 'Sep 2026' },
     { slug: 'anthropic-claude-code-in-action', name: 'Claude Code in Action', issuer: 'Anthropic', date: 'Aug 2026' },
@@ -538,6 +647,7 @@ export const certifications = {
     { slug: 'anthropic-claude-cowork', name: 'Introduction to Claude Cowork', issuer: 'Anthropic', date: 'May 2026' },
     { slug: 'anthropic-claude-101', name: 'Claude 101', issuer: 'Anthropic', date: 'Apr 2026' },
     { slug: 'anthropic-ai-fluency-students', name: 'AI Fluency for Students', issuer: 'Anthropic', date: 'Apr 2026' },
+    { slug: 'hubspot-digital-marketing', name: 'Digital Marketing', issuer: 'HubSpot', date: 'Oct 2026' },
     { slug: 'canva-ai-skills-students', name: 'AI Skills for Students', issuer: 'Canva', date: 'Aug 2026' },
     { slug: 'canva-marketing-with-canva', name: 'Marketing with Canva', issuer: 'Canva', date: 'Jun 2026' },
     { slug: 'semrush-ai-search-os', name: 'AI Search Operating System', issuer: 'Semrush', date: 'Valid to May 2027' },
@@ -555,6 +665,7 @@ export const about = {
   ],
   currentlyLabel: 'Currently',
   currently: [
+    { key: 'Interning', value: 'Influencer marketing, Schbang' },
     { key: 'Studying', value: 'Digital Strategy, Jai Hind College' },
     { key: 'Building', value: 'Sites with Claude Code' },
     { key: 'Watching', value: 'Matchday. Always.' },

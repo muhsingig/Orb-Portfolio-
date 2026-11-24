@@ -2171,6 +2171,71 @@ body.has-cursor button { cursor: none; }
 .freelanceCard a:focus-visible,
 .freelanceCard button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
+/* Freelance FAQ */
+.freelanceFaq {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  gap: 2rem clamp(2rem, 6vw, 6rem);
+  margin-top: clamp(64px, 12vh, 140px);
+}
+.freelanceFaq__title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+.freelanceFaq__list { border-top: 1px solid var(--line); }
+.freelanceFaq__item { border-bottom: 1px solid var(--line); }
+.freelanceFaq__item summary {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+  padding: 1.4rem 0;
+  list-style: none;
+  cursor: pointer;
+}
+.freelanceFaq__item summary::-webkit-details-marker { display: none; }
+.freelanceFaq__item summary:focus-visible { outline: 2px solid var(--pink-hot); outline-offset: 4px; border-radius: 4px; }
+.freelanceFaq__num { font-family: var(--mono); font-size: 0.7rem; color: var(--dim); }
+.freelanceFaq__q {
+  flex: 1;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  font-weight: 500;
+  color: #e8e8e8;
+  transition: color 0.25s;
+}
+.freelanceFaq__item summary:hover .freelanceFaq__q,
+.freelanceFaq__item[open] .freelanceFaq__q { color: #fff; }
+.freelanceFaq__icon {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 14px;
+  align-self: center;
+}
+.freelanceFaq__icon::before,
+.freelanceFaq__icon::after {
+  content: '';
+  position: absolute;
+  inset: 6px 0 auto;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--pink-hot);
+  transition: transform 0.35s var(--ease-out);
+}
+.freelanceFaq__icon::after { transform: rotate(90deg); }
+.freelanceFaq__item[open] .freelanceFaq__icon::after { transform: rotate(0deg); }
+.freelanceFaq__item p {
+  max-width: 60ch;
+  margin: -0.4rem 0 0;
+  padding: 0 2rem 1.6rem calc(0.7rem * 1.6 + 1.2rem);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
 .certSection {
   position: relative;
   padding: 20vh var(--pad-x) 18vh;
@@ -3679,6 +3744,8 @@ body.has-cursor button { cursor: none; }
   .aboutSection__sphereSide { display: none; }
   .freelanceSection__head { grid-template-columns: 1fr; }
   .freelanceGrid { grid-template-columns: 1fr; }
+  .freelanceFaq { grid-template-columns: 1fr; }
+  .freelanceFaq__item p { padding-left: 0; padding-right: 0; }
   .freelanceCard--client { flex-direction: column; }
   .freelanceCard--client .freelanceCard__shot { flex: none; padding: 14px 14px 0; }
   .freelanceCard--client .freelanceCard__body { padding: 20px 22px 24px; }

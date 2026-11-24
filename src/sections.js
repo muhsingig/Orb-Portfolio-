@@ -203,6 +203,17 @@ function buildFreelance() {
       </div>`;
     grid.appendChild(li);
   });
+
+  // FAQ: native <details>, so it opens without JavaScript and for screen readers
+  const faq = document.getElementById('freelance-faq');
+  faq.innerHTML = `
+    <h3 class="freelanceFaq__title fadeUp">${freelance.faqTitle}</h3>
+    <div class="freelanceFaq__list">${freelance.faq.map((f, i) => `
+      <details class="freelanceFaq__item fadeUp"${i === 0 ? ' open' : ''}>
+        <summary data-cursor="Open"><span class="freelanceFaq__num">${pad2(i + 1)}</span><span class="freelanceFaq__q">${f.q}</span><span class="freelanceFaq__icon" aria-hidden="true"></span></summary>
+        <p>${f.a}</p>
+      </details>`).join('')}
+    </div>`;
 }
 
 function buildToolkit() {

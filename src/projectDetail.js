@@ -1,5 +1,6 @@
 import { projects, freelance } from './data.js';
 import { lockScroll } from './ui.js';
+import { track } from './analytics.js';
 
 const pad2 = (n) => String(n + 1).padStart(2, '0');
 
@@ -103,6 +104,7 @@ export function initProjectDetail() {
     openIndex = i;
     returnFocus = document.activeElement;
     fill(i);
+    track('case_study_open', { project: list[i].name, list: list === projects ? 'work' : 'freelance' });
     document.documentElement.classList.add('overlay-open');
     lockScroll(true);
 

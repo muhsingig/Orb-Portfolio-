@@ -16,9 +16,19 @@ export const site = {
   timezone: 'Asia/Kolkata',
   email: 'mdmuhsingigani9@gmail.com',
   linkedin: 'https://www.linkedin.com/in/muhsin-gigani',
+  github: 'https://github.com/muhsingig',
+  // the live address; search data and llms.txt are built from it
+  url: 'https://muhsingigani-portfolio.vercel.app',
   resume: '/Muhsin_Gigani_Resume.pdf',
   roles: ['Strategist', 'Marketer', 'Vibe Coder', 'Brand Nerd', 'Night Owl'],
   badge: 'MARKETING + VIBE CODING • START TO SHIP • ',
+};
+
+// Analytics (see src/analytics.js). Page views come from Vercel Web
+// Analytics, switched on in the Vercel dashboard. For conversions, create a
+// Google Analytics 4 property and paste its Measurement ID here.
+export const analytics = {
+  ga4: '', // e.g. 'G-XXXXXXXXXX'
 };
 
 export const nav = [
@@ -418,6 +428,31 @@ export const freelance = {
       note: 'It runs on a free server that sleeps between visits, so the first load can take up to a minute.',
       accent: '#ff5a3c',
       dive: '#1c0f0a',
+    },
+  ],
+  // Shown under the cards, and sent to Google and AI search as an FAQ.
+  // Answers people (and AI assistants) can quote: keep them short and true.
+  faqTitle: 'Questions clients ask',
+  faq: [
+    {
+      q: 'What kind of websites do you build?',
+      a: 'Portfolios, brand and product launch sites, service-business sites and small web apps. Most of them move, a few are drawn live in 3D, and every one on this page is live.',
+    },
+    {
+      q: 'What do I need to give you?',
+      a: 'Your content, your logo if you have one, and two or three sites you like. I take care of the structure, design, build and launch.',
+    },
+    {
+      q: 'How long does a site take?',
+      a: "It depends on how many pages you need and how ready your content is. You get a date before we start, and a live preview link so you can watch it come together.",
+    },
+    {
+      q: 'Will people actually find the site?',
+      a: "That's the part I care about most: I'm a marketer first. Every site launches with link previews, a sitemap, Google Search Console and analytics, so it gets found and you can see who visits.",
+    },
+    {
+      q: 'How do we start?',
+      a: 'Send me a message through the form below, or email me, with what you have in mind.',
     },
   ],
 };

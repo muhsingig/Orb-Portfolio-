@@ -11,6 +11,8 @@ import {
 import { orbState } from './orb/state.js';
 import { initPlasmaClick } from './plasmaClick.js';
 import { initContactForm } from './contactForm.js';
+import { initAnalytics, track } from './analytics.js';
+import { projects, freelance } from './data.js';
 
 // Keep scroll position at top on load (matches preloader gate)
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -180,8 +182,14 @@ async function boot() {
   initProjectDetail();
   // every click crackles at the cursor and makes the orb flare
   initPlasmaClick({ onStrike: () => { orbState.surge = Math.min(1.4, orbState.surge + 0.85); } });
-  // a sent message makes the orb flare
-  initContactForm({ onSent: () => { orbState.surge = 1.4; } });
+  // a sent message makes the orb flare (and counts as a lead)
+  initContactForm({
+    onSent: ({ topic }) => {
+      orbState.surge = 1.4;
+      track('generate_lead', { topic });
+    },
+  });
+  initAnalytics({ liveSites: [...projects, ...freelance.items].map((p) => p.url).filter(Boolean) });
   WAKE_EVENTS.forEach((t) => window.addEventListener(t, wake, wakeOpts));
   await nextTask();
 

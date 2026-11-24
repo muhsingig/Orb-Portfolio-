@@ -93,7 +93,7 @@ export function initContactForm({ onSent } = {}) {
         new Promise((r) => setTimeout(r, MIN_SENDING)),
       ]);
       showDone();
-      onSent?.();
+      onSent?.({ topic: value('topic') });
     } catch {
       form.classList.add('has-failed');
       status.innerHTML = `Couldn't send that. Email me at <a href="mailto:${site.email}">${site.email}</a> instead.`;

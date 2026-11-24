@@ -33,6 +33,7 @@ export function initProjectDetail() {
   const previewUrl = document.getElementById('detail-preview-url');
   const previewOpen = document.getElementById('detail-preview-open');
   const previewFrame = document.getElementById('detail-preview-frame');
+  const previewStill = document.getElementById('detail-preview-still');
 
   let openIndex = 0;
   let list = projects; // the overlay pages through Work or Freelance
@@ -81,8 +82,20 @@ export function initProjectDetail() {
     if (p.url) {
       previewUrl.textContent = p.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
       previewOpen.href = p.url;
-      previewFrame.src = p.url;
-      previewHint.textContent = p.note ? `${previewHintDefault} ${p.note}` : previewHintDefault;
+      // some sites refuse to be shown inside another page: show their still instead
+      const still = p.embed === false;
+      previewStill.hidden = !still;
+      previewFrame.hidden = still;
+      if (still) {
+        previewFrame.src = 'about:blank';
+        previewStill.href = p.url;
+        previewStill.querySelector('img').src = p.image;
+        previewStill.setAttribute('aria-label', `Open ${p.name} (live site)`);
+        previewHint.textContent = "This site doesn't allow being shown inside another page. Open it to try it live.";
+      } else {
+        previewFrame.src = p.url;
+        previewHint.textContent = p.note ? `${previewHintDefault} ${p.note}` : previewHintDefault;
+      }
     } else {
       previewFrame.src = 'about:blank';
     }

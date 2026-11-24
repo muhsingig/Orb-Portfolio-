@@ -354,6 +354,10 @@
                 <span class="browserFrame__loading">Loading the live site&hellip;</span>
                 <iframe id="detail-preview-frame" title="Live preview" referrerpolicy="no-referrer"
                   sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+                <!-- for sites that refuse to be framed: a still that opens the live site -->
+                <a class="browserFrame__still" id="detail-preview-still" href="#" target="_blank" rel="noreferrer" data-cursor="Visit" hidden>
+                  <img alt="" decoding="async">
+                </a>
               </div>
             </div>
             <p class="previewSection__hint" id="detail-preview-hint">The real site, running live. Scroll inside it.</p>

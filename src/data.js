@@ -429,6 +429,28 @@ export const freelance = {
       accent: '#ff5a3c',
       dive: '#1c0f0a',
     },
+    {
+      slug: 'csr-performance',
+      kind: 'showpiece',
+      image: '/work/csr-performance.webp',
+      name: 'CSR Performance',
+      category: 'Showpiece · E-commerce store',
+      year: '2026',
+      baseline: 'A store for 1:32 die-cast models of the cars you are working toward. Own it in your hand first.',
+      concept:
+        "Die-cast cars usually sell as toys. This store sells them as motivation: a small model of your dream car on the desk, as a reminder of where you're headed. Everything, from the copy to the specs on each model, speaks to that buyer.",
+      highlights: [
+        'A hero that runs through the collection: pick a car along the bottom and the hero switches to it, with its engine, power and 0–100 time.',
+        'A "Today / Tomorrow" slider you drag to compare the model on your desk with the real car in your driveway.',
+        'Ten models with specs and one-line pitches, a shop page, reviews, an FAQ, and full shipping, returns and privacy policies.',
+      ],
+      stack: 'Next.js · React · Vercel',
+      role: 'Concept, design & build',
+      url: 'https://csr-performance-three.vercel.app/',
+      embed: false, // the site sends X-Frame-Options: DENY
+      accent: '#9b5cff',
+      dive: '#140b24',
+    },
   ],
   // Shown under the cards, and sent to Google and AI search as an FAQ.
   // Answers people (and AI assistants) can quote: keep them short and true.
@@ -674,7 +696,7 @@ export const toolkit = {
 // and the original <slug>.pdf in public/.
 export const certifications = {
   title: 'Certified.',
-  intro: 'Thirteen certificates, six of them from Anthropic. Every one is here, and every one opens.',
+  intro: 'Fourteen certificates, six of them from Anthropic. Every one is here, and every one opens.',
   items: [
     { slug: 'anthropic-ai-fluency-framework', name: 'AI Fluency: Framework & Foundations', issuer: 'Anthropic', date: 'Sep 2026' },
     { slug: 'anthropic-claude-code-in-action', name: 'Claude Code in Action', issuer: 'Anthropic', date: 'Aug 2026' },
@@ -682,6 +704,7 @@ export const certifications = {
     { slug: 'anthropic-claude-cowork', name: 'Introduction to Claude Cowork', issuer: 'Anthropic', date: 'May 2026' },
     { slug: 'anthropic-claude-101', name: 'Claude 101', issuer: 'Anthropic', date: 'Apr 2026' },
     { slug: 'anthropic-ai-fluency-students', name: 'AI Fluency for Students', issuer: 'Anthropic', date: 'Apr 2026' },
+    { slug: 'hubspot-social-media', name: 'Social Media', issuer: 'HubSpot', date: 'Nov 2026' },
     { slug: 'hubspot-digital-marketing', name: 'Digital Marketing', issuer: 'HubSpot', date: 'Oct 2026' },
     { slug: 'canva-ai-skills-students', name: 'AI Skills for Students', issuer: 'Canva', date: 'Aug 2026' },
     { slug: 'canva-marketing-with-canva', name: 'Marketing with Canva', issuer: 'Canva', date: 'Jun 2026' },

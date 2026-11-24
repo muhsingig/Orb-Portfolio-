@@ -177,10 +177,14 @@ function buildFreelance() {
   splitWords(document.getElementById('freelance-title'), freelance.title);
   document.getElementById('freelance-intro').textContent = freelance.intro;
   const grid = document.getElementById('freelance-grid');
+  const clients = freelance.items.filter((p) => p.kind === 'client').length;
   freelance.items.forEach((p, i) => {
     const host = p.url.replace(/^https?:\/\//, '').replace(/\/$/, '');
     const kind = p.kind === 'client' ? 'Client work' : 'Showpiece';
-    const li = el('li', `freelanceCard freelanceCard--${p.kind} spotlight`);
+    // client work, and a last showpiece that would sit alone on its row, span the full width
+    const lone = p.kind !== 'client' && i === freelance.items.length - 1 && (i - clients) % 2 === 0;
+    const wide = p.kind === 'client' || lone ? ' freelanceCard--wide' : '';
+    const li = el('li', `freelanceCard freelanceCard--${p.kind}${wide} spotlight`);
     li.style.setProperty('--accent', p.accent);
     li.innerHTML = `
       <a class="freelanceCard__shot" href="${p.url}" target="_blank" rel="noreferrer" data-cursor="Visit" aria-label="Visit ${p.name} (opens the live site)">
